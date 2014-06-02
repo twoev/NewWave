@@ -1,0 +1,7 @@
+New Wave - Noise Elimination With Wavelets At Vast Energies
+
+author James Monk <jmonk@cern.ch>
+
+Performs event Rasterisation, followed by wavelet analysis and event reconstruction.  See http://arxiv.org/abs/1405.5008
+
+

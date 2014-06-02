@@ -1,0 +1,5 @@
+#ifndef NEWWAVE_NEWWAVE_HH
+#define NEWWAVE_NEWWAVE_HH
+
+
+#endif
