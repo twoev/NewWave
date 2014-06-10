@@ -1,0 +1,4 @@
+2014-06-10  James Monk  <jmonk@cern.ch>
+  * Add header file for NewWave/GSLEngine.hh, otherwise we have no way of instantiating one!
+  * Put all relevant headers in a convenient NewWave.hh
+  * Started example Rivet routine in examples/NewWave-Rivet.cc - it doesn't compile yet, but you should get the idea of the intended use
