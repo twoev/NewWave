@@ -3,6 +3,9 @@
 
 #include <vector>
 
+#include <gsl/gsl_wavelet.h>
+#include <gsl/gsl_wavelet2d.h>
+
 #include "NewWave/WaveletEngine.hh"
 #include "NewWave/PixelDefinition.hh"
 
@@ -14,11 +17,7 @@ namespace NewWave{
 
   public:
     
-    struct wavelet;
-    struct wavelet_type;
-    struct wavelet_workspace;
-    
-    GSLEngine(wavelet_type *type, size_t degree,
+    GSLEngine(const gsl_wavelet_type *type, size_t degree,
               const PixelDefinition &pixelDefn);
     
     ~GSLEngine();
@@ -37,15 +36,15 @@ namespace NewWave{
     void initPhiLevels();
 
     /// The wavelet type (Daubechies, Harr...)
-    wavelet_type *_waveletType;
+    const gsl_wavelet_type *_waveletType;
     
     /// The wavelet degree (i.e. 4 for Daubechies 4)
     size_t _degree;
     
     /// gsl wavelet object
-    wavelet *_wavelet;
+    gsl_wavelet *_wavelet;
     /// workspace for the wavelet transform
-    wavelet_workspace *_workspace;
+    gsl_wavelet_workspace *_workspace;
     
     size_t _nSegments;
     size_t _nSegments2;

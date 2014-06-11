@@ -14,11 +14,7 @@ if ENABLE_GSL
 
 libNewWave_la_CPPFLAGS  +=  $(GSLCPPFLAGS)
 libNewWave_la_LDFLAGS   +=  $(GSLLIBS)
-libNewWave_la_SOURCES   +=  GSL_enabled.cc
-
-else
-
-libNewWave_la_SOURCES   +=  GSL_disabled.cc
+libNewWave_la_SOURCES   +=  GSLEngine.cc
 
 endif
 

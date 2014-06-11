@@ -1,3 +1,7 @@
+2014-06-12  James Monk  <jmonk@cern.ch>
+  * Rivet example now compiles, though not useful yet
+  * Moved GSL_enabled.cc to GSLEngine.cc - if GSL not present, simply can't make one, no need for GSL_disabled.cc
+
 2014-06-10  James Monk  <jmonk@cern.ch>
   * Add header file for NewWave/GSLEngine.hh, otherwise we have no way of instantiating one!
   * Put all relevant headers in a convenient NewWave.hh

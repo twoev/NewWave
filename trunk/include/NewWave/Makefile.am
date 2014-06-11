@@ -1,7 +1,6 @@
 SUBDIRS = .
 
 nobase_pkginclude_HEADERS = Exceptions.hh         \
-                            GSLEngine.hh          \
                             NewWave.hh            \
                             PixelArray.hh         \
                             PixelDefinition.hh    \
@@ -9,4 +8,9 @@ nobase_pkginclude_HEADERS = Exceptions.hh         \
                             Utils.hh              \
                             WaveletCoefficient.hh \
                             WaveletEngine.hh      \
-                            WaveletEvent.hh       
+                            WaveletEvent.hh     
+                            
+if ENABLE_GSL
+nobase_pkginclude_HEADERS += GSLEngine.hh
+endif
+
