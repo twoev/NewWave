@@ -3,6 +3,7 @@
 
 #include "NewWave/RasterisedEvent.hh"
 #include "NewWave/WaveletEngine.hh"
+#include "NewWave/Utils.hh"
 
 namespace NewWave{
   
@@ -66,7 +67,7 @@ namespace NewWave{
       for(auto p: _modifiedParticles){
         size_t ybin   = _originalEvent.pixelDefinition().yPixelIndex(p.momentum().rapidity());
         size_t phiBin = _originalEvent.pixelDefinition().yPixelIndex(p.momentum().phi());
-        p.momentum() *= _ratio[ybin][phiBin];
+        p.setMomentum(p.momentum()*_ratio[ybin][phiBin]);
       }
       
       return _modifiedParticles;

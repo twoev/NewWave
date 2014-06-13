@@ -15,7 +15,8 @@ namespace Rivet {
 
     NewWave_Example()
       : Analysis("NewWave_Example"),
-        _pixelDefn(NewWave::PixelDefinition(128, 3.2))
+        _pixelDefn(NewWave::PixelDefinition(128, 3.2)),
+        _uncachedJetProjection(FastJets::CAM, 1.2)
     {    }
 
 
@@ -39,11 +40,35 @@ namespace Rivet {
     void analyze(const Event& event) {
       const double weight = event.weight();
 
+      Jets jets = applyProjection<FastJets>(event, "CAM12").jetsByPt(150.*GeV);
+
+      // this saves doing the wavelet transform if we have no high pT jets
+      // If there is a lot of pile up then the cut of 180 GeV may need to be lowered
+      if(jets.size()==0) vetoEvent;
+      
+      for(const Jet &jet: jets){
+        if(fabs(jet.momentum().rapidity()) < 2. &&
+           jet.momentum().perp() > 300.*GeV){
+          _h_jetMass->fill(jet.momentum().mass(), weight);
+        }
+      }
+      
       const Particles &particles=applyProjection<FinalState>(event, "Particles").particles();
-      NewWave::RasterisedEvent rasterised(particles, _pixelDefn);
-      NewWave::WaveletEvent waveletEvent(rasterised, *_waveletEngine);
+      NewWave::RasterisedEvent<Particles> rasterised(particles, _pixelDefn);
+      NewWave::WaveletEvent<Particles> waveletEvent(rasterised, *_waveletEngine);
       
       waveletEvent.denoise(1.*GeV);
+      
+      const Particles &denoisedParticles = waveletEvent.particles();
+      
+      _uncachedJetProjection.calc(denoisedParticles);
+      const Jets &filteredJets = _uncachedJetProjection.jetsByPt(300.*GeV);
+      
+      for(const Jet &jet: filteredJets){
+        if(fabs(jet.momentum().rapidity()) < 2.){
+          _h_denoisedJetMass->fill(jet.momentum().mass(), weight);
+        }
+      }
       
     }
 
@@ -51,6 +76,8 @@ namespace Rivet {
     /// Normalise histograms etc., after the run
     void finalize() {
 
+      scale(_h_jetMass, crossSection() / sumOfWeights());
+      scale(_h_denoisedJetMass, crossSection() / sumOfWeights());
 
     }
 
@@ -64,6 +91,10 @@ namespace Rivet {
     // Since we don't know what this is, it is a pointer to the
     // WaveletEngine base class
     NewWave::WaveletEngine *_waveletEngine;
+    
+    // Fastjets projection not booked through the projection system
+    // This runs on the local copy of the modified particles
+    FastJets _uncachedJetProjection;
     
     Histo1DPtr _h_jetMass;
     Histo1DPtr _h_denoisedJetMass;
