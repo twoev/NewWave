@@ -4,10 +4,8 @@
 
 namespace NewWave {
   
-  RasterisedEvent::RasterisedEvent(const HepMC::GenEvent *event,
-                                   const PixelDefinition &pixelDefn):
-  _pixelDefn(pixelDefn),
-  _pixels(pixelDefn.makeEmptyPixelArray()){
+  template<typename T>
+  void RasterisedEvent<T>::fillFromHepMC(const HepMC::GenEvent *event){
     for(HepMC::GenEvent::particle_const_iterator p=event->particles_begin();
         p != event->particles_end(); ++p){
       if((*p)->status() != 1) continue;

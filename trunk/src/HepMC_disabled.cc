@@ -3,10 +3,8 @@
 
 namespace NewWave{
   
-  RasterisedEvent::RasterisedEvent(const HepMC::GenEvent *event,
-                                   const PixelDefinition &pixelDefn):
-  _pixelDefn(pixelDefn),
-  _pixels(pixelDefn.makeEmptyPixelArray()){
+  template<typename T>
+  void RasterisedEvent<T>::fillFromHepMC(const HepMC::GenEvent *event){
     throw NotCompiledException("HepMC");
   }
   

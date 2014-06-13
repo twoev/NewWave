@@ -3,6 +3,8 @@
 
 #include "NewWave/PixelArray.hh"
 
+#include <functional>
+#include <algorithm>
 #include <cmath>
 
 namespace NewWave{
@@ -64,7 +66,25 @@ namespace NewWave{
     
     return rowMajor;
   }
- 
+
+  
+  
+  inline vector<double> operator / (vector<double> left,
+                                    const vector<double> &right){
+    
+    std::transform(left.begin(), left.end(), right.begin(), left.begin(), std::divides<double>());
+    return left;
+  }
+  
+
+  inline PixelArray operator / (PixelArray left, const PixelArray &right){
+
+    std::transform(left.begin(), left.end(), right.begin(), left.begin(),
+                   [](vector<double> num, const vector<double> denom){return num / denom;});
+    return left;
+  }
+  
+  
   /// convert an angle into the range \f$0 < \phi < 2\pi\f$
   inline double mod2Pi(double angle){
     if(angle < TWOPI && angle > 0) return angle;

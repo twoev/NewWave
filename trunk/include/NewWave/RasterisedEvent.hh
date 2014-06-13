@@ -10,7 +10,7 @@ namespace HepMC{
 namespace NewWave {
   
   /// A rasterised representation of the event
-  
+  template<typename T>
   class RasterisedEvent{
     
   public:
@@ -22,13 +22,14 @@ namespace NewWave {
      *  \param inputParticles a vector of input Particle types
      *  \param pixelDefn The defintion of the pixel array
      */
-    template<typename T>
-    RasterisedEvent(const vector<T> &inputParticles,
+    RasterisedEvent(const T &inputParticles,
                     const PixelDefinition &pixelDefn):
     _pixelDefn(pixelDefn),
     _pixels(pixelDefn.makeEmptyPixelArray()){
       
-      for(const T &p: inputParticles){
+      for(auto p: inputParticles){
+//      for(typename T::const_iterator p = inputParticles.begin();
+//          p != inputParticles.end(); ++p){
         addParticle(p);
       }
     }
@@ -39,7 +40,9 @@ namespace NewWave {
      *  \param pixelDefn The definition of the pixel dimensions
      */
     RasterisedEvent(const PixelArray &pixelArray,
-                    const PixelDefinition &pixelDefn);
+                    const PixelDefinition &pixelDefn):
+            _pixelDefn(pixelDefn),
+            _pixels(pixelArray){}
     
     /// Constructor from a HepMC GenEvent
     /**
@@ -49,29 +52,45 @@ namespace NewWave {
      *  \param pixelDefn The definition of the pixel array
      */
     RasterisedEvent(const HepMC::GenEvent *event,
-                    const PixelDefinition &pixelDefn);
+                    const PixelDefinition &pixelDefn):
+    _pixelDefn(pixelDefn),
+    _pixels(pixelDefn.makeEmptyPixelArray()){
+      _input = event;
+      fillFromHepMC(event);
+    }
+    
+    const T &inputParticles()const{return _input;}
+    
     
     /// Return the array of pixel values
     /**
      *  \return the array of pixel values for this event
      */
-    const PixelArray &pixels()const;
+    const PixelArray &pixels()const{return _pixels;}
     
     /// Return the pixel array definition
     /**
      *  \return the definition in \f$\phi\f$ and rapidity
      */
-    const PixelDefinition &pixelDefinition()const;
+    const PixelDefinition &pixelDefinition()const{return _pixelDefn;}
     
   private:
     
     PixelDefinition _pixelDefn;
     PixelArray _pixels;
     
-    void addParticle(double rapidity, double phi, double pT);
+    T _input;
     
-    template<typename T>
-    void addParticle(const T &particle){
+    void fillFromHepMC(const HepMC::GenEvent *event);
+    
+    void addParticle(double rapidity, double phi, double pT){
+      size_t ybin   = _pixelDefn.yPixelIndex(rapidity);
+      size_t phiBin = _pixelDefn.phiPixelIndex(phi);
+      _pixels[ybin][phiBin] += pT;
+    }
+    
+    template<typename P>
+    void addParticle(const P &particle){
       addParticle(particle.momentum().rapidity(),
                   particle.momentum().phi(),
                   particle.momentum().pT());

@@ -7,13 +7,18 @@
 namespace NewWave{
   
   /// A representation of the event in the wavelet domain
-  
+  template<typename T>
   class WaveletEvent{
     
   public:
     
     /// Constructor from a RasterisedEvent and a WaveletEngine
-    WaveletEvent(const RasterisedEvent &event, const WaveletEngine &engine);
+    WaveletEvent(const RasterisedEvent<T> &event, const WaveletEngine &engine):
+    _originalEvent(event),
+    _rasterisedEvent(event),
+    _engine(engine),
+    _doInvert(false){}
+
     
     /// Return the wavelet coefficients
     /**
@@ -33,7 +38,14 @@ namespace NewWave{
      *
      *  \return The RasterisedEvent
      */
-    const RasterisedEvent &rasterisedEvent()const;
+    const RasterisedEvent<T> &rasterisedEvent()const{
+      if(!_doInvert) return _rasterisedEvent;
+      
+      const PixelArray &pixels = _engine.inverseTransform(coefficients());
+      _rasterisedEvent = RasterisedEvent<T>(pixels, _rasterisedEvent.pixelDefinition());
+      _doInvert = false;
+      return _rasterisedEvent;
+    }
     
     /// Return the original RasterisedEvent, unmodified
     /**
@@ -41,7 +53,24 @@ namespace NewWave{
      *
      *  \return The original event, unmodified by wavelet processing
      */
-    const RasterisedEvent &originalEvent()const;
+    const RasterisedEvent<T> &originalEvent()const{
+      return _originalEvent;
+    }
+    
+    const T &particles()const{
+      
+      _ratio = _originalEvent.pixels() / rasterisedEvent().pixels();
+      
+      _modifiedParticles = _originalEvent.inputParticles();
+      
+      for(auto p: _modifiedParticles){
+        size_t ybin   = _originalEvent.pixelDefinition().yPixelIndex(p.momentum().rapidity());
+        size_t phiBin = _originalEvent.pixelDefinition().yPixelIndex(p.momentum().phi());
+        p.momentum() *= _ratio[ybin][phiBin];
+      }
+      
+      return _modifiedParticles;
+    }
     
     /// De-noise the event using a simple flat threshold
     /**
@@ -59,13 +88,17 @@ namespace NewWave{
     
     WaveletCoefficients &_coefficients()const;
     
-    RasterisedEvent _originalEvent;
-    mutable RasterisedEvent _rasterisedEvent;
+    RasterisedEvent<T> _originalEvent;
+    mutable RasterisedEvent<T> _rasterisedEvent;
     const WaveletEngine &_engine;
     
     mutable WaveletCoefficients _coeffs;
     
     mutable bool _doInvert;
+    
+    mutable PixelArray _ratio;
+    
+    mutable T _modifiedParticles;
     
   };
 }

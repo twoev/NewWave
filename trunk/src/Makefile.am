@@ -3,7 +3,6 @@ SUBDIRS = .
 lib_LTLIBRARIES = libNewWave.la
 
 libNewWave_la_SOURCES = PixelDefinition.cc    \
-                        RasterisedEvent.cc    \
                         WaveletCoefficient.cc \
                         WaveletEvent.cc
 

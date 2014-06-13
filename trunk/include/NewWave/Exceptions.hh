@@ -35,7 +35,7 @@ namespace NewWave {
   class PixelArrayMismatch : public std::runtime_error{
   public:
     PixelArrayMismatch():
-    std::runtime_error("The pixel array size does not match the previous setup of this wavelet engine."){};
+    std::runtime_error("The pixel array size does not match."){};
   };
   
   /// Thrown when a GSL wavelet transform call fails

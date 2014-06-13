@@ -1,3 +1,7 @@
+2014-06-13  James Monk  <jmonk@cern.ch>
+  * Templated WaveletEvent so it can return particles
+  * Divide methods for PixelArray in Utils.hh
+
 2014-06-12  James Monk  <jmonk@cern.ch>
   * Rivet example now compiles, though not useful yet
   * Moved GSL_enabled.cc to GSLEngine.cc - if GSL not present, simply can't make one, no need for GSL_disabled.cc
