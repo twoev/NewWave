@@ -54,13 +54,13 @@ namespace Rivet {
       }
       
       const Particles &particles=applyProjection<FinalState>(event, "Particles").particles();
-      NewWave::RasterisedEvent<Particles> rasterised(particles, _pixelDefn);
-      NewWave::WaveletEvent<Particles> waveletEvent(rasterised, *_waveletEngine);
+//      NewWave::RasterisedEvent<Particles> rasterised(particles, _pixelDefn);
+      NewWave::WaveletEvent<Particles> waveletEvent(particles, _pixelDefn, *_waveletEngine);
       
       waveletEvent.denoise(1.*GeV);
       
       const Particles &denoisedParticles = waveletEvent.particles();
-            
+      
       _uncachedJetProjection.calc(denoisedParticles);
       const Jets &filteredJets = _uncachedJetProjection.jetsByPt(300.*GeV);
       

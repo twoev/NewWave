@@ -15,6 +15,14 @@ namespace NewWave{
     
   public:
     
+    WaveletEvent(const T &particles,
+                 const PixelDefinition &pixelDefn,
+                 const WaveletEngine &engine):
+    _originalEvent(particles, pixelDefn),
+    _rasterisedEvent(_originalEvent),
+    _engine(engine),
+    _doInvert(false){}
+    
     /// Constructor from a RasterisedEvent and a WaveletEngine
     WaveletEvent(const RasterisedEvent<T> &event, const WaveletEngine &engine):
     _originalEvent(event),

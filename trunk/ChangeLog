@@ -1,3 +1,7 @@
+2014-06-16  James Monk  <jmonk@cern.ch>
+  * Check that particle is covered by PixelDefinition now added
+  * Can construct WaveletEvent directly from list of particles
+
 2014-06-15  James Monk  <jmonk@cern.ch>
   * More fixes - denoise works now in Rivet example
   * Todo: need check on particle rapidity in RasterisedEvent because Rivet particles are selected by *pseudo* rapidity.

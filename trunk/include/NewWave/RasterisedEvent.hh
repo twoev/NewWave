@@ -26,12 +26,12 @@ namespace NewWave {
                     const PixelDefinition &pixelDefn):
     _pixelDefn(pixelDefn),
     _pixels(pixelDefn.makeEmptyPixelArray()),
-    _input(inputParticles){
+    _input(T()){
       
       for(auto p: inputParticles){
-//      for(typename T::const_iterator p = inputParticles.begin();
-//          p != inputParticles.end(); ++p){
-        addParticle(p);
+        if(_pixelDefn.covers(p.momentum().rapidity(), p.momentum().phi())){
+          addParticle(p);
+        }
       }
     }
     
@@ -92,6 +92,7 @@ namespace NewWave {
     
     template<typename P>
     void addParticle(const P &particle){
+      _input.push_back(particle);
       addParticle(particle.momentum().rapidity(),
                   particle.momentum().phi(),
                   particle.momentum().pT());

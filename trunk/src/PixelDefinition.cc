@@ -42,6 +42,9 @@ namespace NewWave{
   _nBinsPhi(nBinsPhi), _nBinsY(nBinsY), _phiMin(phiMin), _yMin(yMin),
   _phiMax(phiMax), _yMax(yMax){
     
+    _phiMin = mod2Pi(_phiMin);
+    _phiMax = mod2Pi(_phiMax);
+    
     if(_phiMin > _phiMax) throw PixelDefinitionException("phi min is greater than phi max");
     if(_yMin > _yMax) throw PixelDefinitionException("rapidity min is greater than rapidity max");
       
@@ -99,6 +102,24 @@ namespace NewWave{
   
   size_t PixelDefinition::nPixels()const{
     return _nBins;
+  }
+  
+  double PixelDefinition::yMin()const{
+    return _yMin;
+  }
+  
+  double PixelDefinition::yMax()const{
+    return _yMax;
+  }
+  
+  bool PixelDefinition::covers(double rapidity, double phi)const{
+    if(rapidity > yMax() || rapidity < yMin()) return false;
+    
+    phi = mod2Pi(phi);
+    
+    if(phi > _phiMax || phi < _phiMin) return false;
+    
+    return true;
   }
   
 }

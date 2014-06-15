@@ -81,6 +81,21 @@ namespace NewWave{
     /// Return the number of pixels along the y and \f$\phi\f$ axes
     size_t nPixels()const;
     
+    /// Return the minimum of the rapidity covered by this PixelDefinition
+    double yMin()const;
+
+    /// Return the maximum of the rapidity covered by this PixelDefinition
+    double yMax()const;
+    
+    /// Returns true if the given rapidity and phi values are inside the covered ranges
+    /**
+     *  \param y The rapidity of a particle 
+     *  \param phi The \f$\phi\f$ of a particle
+     *
+     *  \return true if the particle is covered by this PixelDefinition
+     */
+    bool covers(double y, double phi)const;
+    
   private:
     
     size_t _nBinsPhi;
