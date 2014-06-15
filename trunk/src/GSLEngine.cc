@@ -2,6 +2,8 @@
 #include "NewWave/Exceptions.hh"
 #include "NewWave/Utils.hh"
 
+#include <algorithm>
+
 namespace NewWave {
   
   GSLEngine::GSLEngine(const gsl_wavelet_type *type, size_t degree,
@@ -58,14 +60,19 @@ namespace NewWave {
       throw PixelArrayMismatch();
     }
     
-    vector<double> input(0., _nSegments2);
+    vector<double> result(coefficients.size(), 0.);
     
-    for(size_t ii=0; ii != coefficients.size(); ++ii){
-      
-    }
+    std::transform(coefficients.begin(), coefficients.end(), result.begin(),
+                   [](const WaveletCoefficient &c){return c.value();});
     
+    int status =
+    gsl_wavelet2d_transform_inverse(_wavelet, &(result[0]),
+                                    _nSegments, _nSegments, _nSegments, _workspace);
     
-    return PixelArray();
+    if(status != GSL_SUCCESS)throw GSLException();
+
+    
+    return makeArray(result);
   }
   
   

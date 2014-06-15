@@ -25,7 +25,8 @@ namespace NewWave {
     RasterisedEvent(const T &inputParticles,
                     const PixelDefinition &pixelDefn):
     _pixelDefn(pixelDefn),
-    _pixels(pixelDefn.makeEmptyPixelArray()){
+    _pixels(pixelDefn.makeEmptyPixelArray()),
+    _input(inputParticles){
       
       for(auto p: inputParticles){
 //      for(typename T::const_iterator p = inputParticles.begin();

@@ -60,7 +60,7 @@ namespace Rivet {
       waveletEvent.denoise(1.*GeV);
       
       const Particles &denoisedParticles = waveletEvent.particles();
-      
+            
       _uncachedJetProjection.calc(denoisedParticles);
       const Jets &filteredJets = _uncachedJetProjection.jetsByPt(300.*GeV);
       

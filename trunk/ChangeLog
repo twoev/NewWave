@@ -1,3 +1,7 @@
+2014-06-15  James Monk  <jmonk@cern.ch>
+  * More fixes - denoise works now in Rivet example
+  * Todo: need check on particle rapidity in RasterisedEvent because Rivet particles are selected by *pseudo* rapidity.
+
 2014-06-13  James Monk  <jmonk@cern.ch>
   * Templated WaveletEvent so it can return particles
   * Divide methods for PixelArray in Utils.hh

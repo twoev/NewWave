@@ -3,6 +3,7 @@
 #include "NewWave/Utils.hh"
 
 #include <iostream>
+#include <string>
 
 namespace NewWave{
   
@@ -81,7 +82,7 @@ namespace NewWave{
   size_t PixelDefinition::phiPixelIndex(double phi)const{
     
     double phiRel = mod2Pi(phi) - _phi0;
-    if(phiRel < 0.) throw PixelDefinitionException("bad phi value.");
+    if(phiRel < 0.) throw PixelDefinitionException("bad phi value: " + std::to_string(phi));
     double dPhiBin = phiRel * _phiToBin;
     
     return (int)dPhiBin;
@@ -90,7 +91,7 @@ namespace NewWave{
   size_t PixelDefinition::yPixelIndex(double y)const{
     
     double yRel = y - _y0;
-    if(yRel < 0.) throw PixelDefinitionException("rapidity is out of range.");
+    if(yRel < 0.) throw PixelDefinitionException("rapidity is out of range: " + std::to_string(y));
     
     double dYBin = yRel * _yToBin;
     return (int) dYBin;

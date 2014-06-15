@@ -5,7 +5,10 @@
 
 #include <functional>
 #include <algorithm>
+#include <assert.h>
 #include <cmath>
+
+#include <iostream>
 
 namespace NewWave{
  
@@ -67,6 +70,22 @@ namespace NewWave{
     return rowMajor;
   }
 
+  inline PixelArray makeArray(const vector<double> &row){
+    size_t n = sqrt(row.size());
+    assert(n*n == row.size());
+    PixelArray output;
+
+    vector<double> line;
+    for(double el: row){
+      line.push_back(el);
+      if(line.size()==n){
+        output.push_back(line);
+        line.clear();
+      }
+    }
+    
+    return output;
+  }
   
   
   inline vector<double> operator / (vector<double> left,
@@ -78,9 +97,9 @@ namespace NewWave{
   
 
   inline PixelArray operator / (PixelArray left, const PixelArray &right){
-
+    
     std::transform(left.begin(), left.end(), right.begin(), left.begin(),
-                   [](vector<double> num, const vector<double> denom){return num / denom;});
+                   [](vector<double> num, const vector<double> &denom){return num / denom;});
     return left;
   }
   

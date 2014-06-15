@@ -5,6 +5,8 @@
 #include "NewWave/WaveletEngine.hh"
 #include "NewWave/Utils.hh"
 
+#include <cmath>
+
 namespace NewWave{
   
   /// A representation of the event in the wavelet domain
@@ -29,7 +31,7 @@ namespace NewWave{
      *
      *  \return The wavelet coefficients
      */
-    const WaveletCoefficients &coefficients()const;
+    const WaveletCoefficients &coefficients()const{return _coefficients();}
     
     /// Return the rasterised event in rapidity-\f$\phi\f$ space
     /**
@@ -40,6 +42,7 @@ namespace NewWave{
      *  \return The RasterisedEvent
      */
     const RasterisedEvent<T> &rasterisedEvent()const{
+      
       if(!_doInvert) return _rasterisedEvent;
       
       const PixelArray &pixels = _engine.inverseTransform(coefficients());
@@ -60,14 +63,18 @@ namespace NewWave{
     
     const T &particles()const{
       
-      _ratio = _originalEvent.pixels() / rasterisedEvent().pixels();
+      _ratio = rasterisedEvent().pixels() / _originalEvent.pixels() ;
       
-      _modifiedParticles = _originalEvent.inputParticles();
+      _modifiedParticles.clear();
       
-      for(auto p: _modifiedParticles){
+      for(auto p: _originalEvent.inputParticles()){
         size_t ybin   = _originalEvent.pixelDefinition().yPixelIndex(p.momentum().rapidity());
-        size_t phiBin = _originalEvent.pixelDefinition().yPixelIndex(p.momentum().phi());
-        p.setMomentum(p.momentum()*_ratio[ybin][phiBin]);
+        size_t phiBin = _originalEvent.pixelDefinition().phiPixelIndex(p.momentum().phi());
+        double ratio = _ratio[ybin][phiBin];
+        if(ratio > 0.){
+          _modifiedParticles.push_back(p);
+          _modifiedParticles.back().setMomentum(p.momentum()*ratio);
+        }
       }
       
       return _modifiedParticles;
@@ -83,11 +90,24 @@ namespace NewWave{
      *
      *  \param noiseThreshold The threshold for coefficients
      */
-    void denoise(double noiseThreshold);
+    void denoise(double noiseThreshold){
+      for(WaveletCoefficient &coeff: _coefficients()){
+        if(fabs(coeff.value()) < noiseThreshold){
+          coeff.setValue(0.);
+          _doInvert = true;
+        }
+      }
+    }
+
     
   private:
     
-    WaveletCoefficients &_coefficients()const;
+    WaveletCoefficients &_coefficients()const{
+      if(_coeffs.size() != 0) return _coeffs;
+      _coeffs = _engine.transform(_rasterisedEvent.pixels());
+      return _coeffs;
+    }
+
     
     RasterisedEvent<T> _originalEvent;
     mutable RasterisedEvent<T> _rasterisedEvent;
