@@ -5,6 +5,7 @@
 #include "NewWave/WaveletEngine.hh"
 #include "NewWave/Utils.hh"
 
+#include <functional>
 #include <cmath>
 
 namespace NewWave{
@@ -99,14 +100,41 @@ namespace NewWave{
      *  \param noiseThreshold The threshold for coefficients
      */
     void denoise(double noiseThreshold){
+      
+      filter([noiseThreshold](const WaveletCoefficient &c)->bool {return (fabs(c.value()) > noiseThreshold); });
+      return;
+    }
+
+    /// Filter the event by setting selected coefficients to zero
+    /**
+     *  The std::function passed in here selects WaveletCoefficients and 
+     *  should return true if they are to be kept, or false if rejected.
+     *  This function is applied to all of the coefficients in the event.
+     *  Note that it can be called several times, so filters can be 
+     *  combined (e.g. de-noising followed by removal of high-frequency 
+     *  terms).
+     *
+     *  The WaveletEvent::denoise method calls this to select only 
+     *  coefficients above threshold.  It provides a good example of 
+     *  defining a selection function inline using lamdas.  Of course,
+     *  you can also use functors or function pointers.
+     *
+     *  \param select Function that determines whether a single 
+     *  coefficient is kept or set to zero.  It should take a 
+     *  NewWave::WaveletCoefficient as the sole argument.
+     *
+     */
+    
+    void filter(const std::function<bool (const WaveletCoefficient&)> &select){
+      
       for(WaveletCoefficient &coeff: _coefficients()){
-        if(fabs(coeff.value()) < noiseThreshold){
+        if(!select(coeff)){
           coeff.setValue(0.);
           _doInvert = true;
         }
       }
+      return;
     }
-
     
   private:
     
