@@ -8,6 +8,10 @@
 #include <functional>
 #include <cmath>
 
+namespace HepMC{
+  class GenEvent;
+}
+
 namespace NewWave{
   
   /// A representation of the event in the wavelet domain
@@ -89,6 +93,7 @@ namespace NewWave{
       return _modifiedParticles;
     }
     
+    
     /// De-noise the event using a simple flat threshold
     /**
      *  Event de-noising removes all coefficients whose magnitude is 
@@ -144,6 +149,8 @@ namespace NewWave{
       return _coeffs;
     }
 
+    HepMC::GenEvent *_genEvent()const;
+    
     
     RasterisedEvent<T> _originalEvent;
     mutable RasterisedEvent<T> _rasterisedEvent;
@@ -158,6 +165,13 @@ namespace NewWave{
     mutable T _modifiedParticles;
     
   };
+  
+  
+  template<>
+  HepMC::GenEvent* const &WaveletEvent<HepMC::GenEvent *>::particles()const;
+  
+  
+  
 }
 
 #endif

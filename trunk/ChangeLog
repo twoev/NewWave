@@ -1,3 +1,7 @@
+2014-06-18  James Monk <jmonk@cern.ch>
+  * Started HepMC example
+  * HepMC template specialisations work now
+
 2014-06-16  James Monk  <jmonk@cern.ch>
   * Check that particle is covered by PixelDefinition now added
   * Can construct WaveletEvent directly from list of particles

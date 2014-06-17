@@ -45,21 +45,6 @@ namespace NewWave {
             _pixelDefn(pixelDefn),
             _pixels(pixelArray){}
     
-    /// Constructor from a HepMC GenEvent
-    /**
-     *  Constructor from a HepMC::GenEvent. Requires compiling against HepMC
-     *
-     *  \param event The HepMC GenEvent
-     *  \param pixelDefn The definition of the pixel array
-     */
-    RasterisedEvent(const HepMC::GenEvent *event,
-                    const PixelDefinition &pixelDefn):
-    _pixelDefn(pixelDefn),
-    _pixels(pixelDefn.makeEmptyPixelArray()){
-      _input = event;
-      fillFromHepMC(event);
-    }
-    
     const T &inputParticles()const{return _input;}
     
     
@@ -99,6 +84,27 @@ namespace NewWave {
     }
     
   };
+  
+  template<>
+  void RasterisedEvent<HepMC::GenEvent*>::fillFromHepMC(const HepMC::GenEvent*  event);
+  
+  /// Specialised constructor from a HepMC GenEvent
+  /**
+   *  Constructor from a HepMC::GenEvent. Requires compiling against HepMC
+   *
+   *  \param event The HepMC GenEvent
+   *  \param pixelDefn The definition of the pixel array
+   */
+  template<>
+  RasterisedEvent<HepMC::GenEvent*>::RasterisedEvent(HepMC::GenEvent* const &event,
+                  const PixelDefinition &pixelDefn):
+  _pixelDefn(pixelDefn),
+  _pixels(pixelDefn.makeEmptyPixelArray()){
+    _input = event;
+    fillFromHepMC(event);
+  }
+  
+  
 }
 
 #endif

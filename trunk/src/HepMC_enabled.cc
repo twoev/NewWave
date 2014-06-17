@@ -1,11 +1,12 @@
 #include "NewWave/RasterisedEvent.hh"
+#include "NewWave/WaveletEvent.hh"
 
 #include "HepMC/GenEvent.h"
 
 namespace NewWave {
   
-  template<typename T>
-  void RasterisedEvent<T>::fillFromHepMC(const HepMC::GenEvent *event){
+  template<>
+  void RasterisedEvent<HepMC::GenEvent*>::fillFromHepMC(const HepMC::GenEvent*  event){
     for(HepMC::GenEvent::particle_const_iterator p=event->particles_begin();
         p != event->particles_end(); ++p){
       if((*p)->status() != 1) continue;
@@ -14,11 +15,20 @@ namespace NewWave {
       double e = (*p)->momentum().e();
       
       double rapidity = 0.5 * log((e + pz) / (e-pz));
-      
-      addParticle(rapidity, (*p)->momentum().phi(), (*p)->momentum().perp());
+      if(_pixelDefn.covers(rapidity, (*p)->momentum().phi())){
+        addParticle(rapidity, (*p)->momentum().phi(), (*p)->momentum().perp());
+      }
     }
     
   }
+  
+  template<>
+  HepMC::GenEvent* const &WaveletEvent<HepMC::GenEvent *>::particles()const{
+   
+    return _originalEvent.inputParticles();
+  }
+  
+  
   
 }
 
