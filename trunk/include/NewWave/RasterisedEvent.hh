@@ -67,7 +67,7 @@ namespace NewWave {
     
     T _input;
     
-    void fillFromHepMC(const HepMC::GenEvent *event);
+//    void fillFromHepMC(const HepMC::GenEvent *event);
     
     void addParticle(double rapidity, double phi, double pT){
       size_t ybin   = _pixelDefn.yPixelIndex(rapidity);
@@ -85,9 +85,6 @@ namespace NewWave {
     
   };
   
-  template<>
-  void RasterisedEvent<HepMC::GenEvent*>::fillFromHepMC(const HepMC::GenEvent*  event);
-  
   /// Specialised constructor from a HepMC GenEvent
   /**
    *  Constructor from a HepMC::GenEvent. Requires compiling against HepMC
@@ -97,13 +94,7 @@ namespace NewWave {
    */
   template<>
   RasterisedEvent<HepMC::GenEvent*>::RasterisedEvent(HepMC::GenEvent* const &event,
-                  const PixelDefinition &pixelDefn):
-  _pixelDefn(pixelDefn),
-  _pixels(pixelDefn.makeEmptyPixelArray()){
-    _input = event;
-    fillFromHepMC(event);
-  }
-  
+                                                     const PixelDefinition &pixelDefn);
   
 }
 

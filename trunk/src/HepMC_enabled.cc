@@ -6,7 +6,12 @@
 namespace NewWave {
   
   template<>
-  void RasterisedEvent<HepMC::GenEvent*>::fillFromHepMC(const HepMC::GenEvent*  event){
+  RasterisedEvent<HepMC::GenEvent*>::RasterisedEvent(HepMC::GenEvent* const &event,
+                                                     const PixelDefinition &pixelDefn):
+  _pixelDefn(pixelDefn),
+  _pixels(pixelDefn.makeEmptyPixelArray()){
+    
+    _input = event;
     for(HepMC::GenEvent::particle_const_iterator p=event->particles_begin();
         p != event->particles_end(); ++p){
       if((*p)->status() != 1) continue;
@@ -21,7 +26,7 @@ namespace NewWave {
     }
     
   }
-  
+
   template<>
   HepMC::GenEvent* const &WaveletEvent<HepMC::GenEvent *>::particles()const{
    

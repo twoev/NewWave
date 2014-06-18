@@ -1,10 +1,21 @@
 #include "NewWave/RasterisedEvent.hh"
+#include "NewWave/WaveletEvent.hh"
+
 #include "NewWave/Exceptions.hh"
 
 namespace NewWave{
   
-  template<typename T>
-  void RasterisedEvent<T>::fillFromHepMC(const HepMC::GenEvent *event){
+  template<>
+  RasterisedEvent<HepMC::GenEvent*>::RasterisedEvent(HepMC::GenEvent* const &event,
+                                                     const PixelDefinition &pixelDefn):
+  _pixelDefn(pixelDefn),
+  _pixels(pixelDefn.makeEmptyPixelArray()){
+    throw NotCompiledException("HepMC");
+  }
+  
+  template<>
+  HepMC::GenEvent* const &WaveletEvent<HepMC::GenEvent *>::particles()const{
+    
     throw NotCompiledException("HepMC");
   }
   
