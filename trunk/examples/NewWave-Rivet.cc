@@ -25,7 +25,7 @@ namespace Rivet {
     /// Book histograms and initialise projections before the run
     void init() {
 
-      FinalState fs(-3.2, 3.2);
+      FinalState fs(-4., 4.);
       addProjection(fs, "Particles");
       addProjection(FastJets(fs, FastJets::CAM, 1.2), "CAM12");
       
@@ -54,7 +54,6 @@ namespace Rivet {
       }
       
       const Particles &particles=applyProjection<FinalState>(event, "Particles").particles();
-//      NewWave::RasterisedEvent<Particles> rasterised(particles, _pixelDefn);
       NewWave::WaveletEvent<Particles> waveletEvent(particles, _pixelDefn, *_waveletEngine);
       
       waveletEvent.denoise(1.*GeV);
