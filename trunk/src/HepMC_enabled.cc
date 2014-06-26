@@ -73,6 +73,9 @@ namespace NewWave {
                                                             10,
                                                             (*p)->flow(),
                                                             (*p)->polarization());
+          
+          pOut->set_generated_mass(ratio * (*p)->generated_mass());
+          
           toUpdate.push_back(pOut);
           vx->add_particle_out(pOut);
           _modifiedParticles->add_vertex(vx);
