@@ -1,3 +1,6 @@
+2014-07-28  James Monk  <jmonk@cern.ch>
+  * Initialise particles to input particles for WaveletEvent
+
 2014-06-18  James Monk <jmonk@cern.ch>
   * Started HepMC example
   * HepMC template specialisations work now

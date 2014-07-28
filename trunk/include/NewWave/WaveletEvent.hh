@@ -26,14 +26,16 @@ namespace NewWave{
     _originalEvent(particles, pixelDefn),
     _rasterisedEvent(_originalEvent),
     _engine(engine),
-    _doInvert(false){}
+    _doInvert(false),
+    _modifiedParticles(particles){}
     
     /// Constructor from a RasterisedEvent and a WaveletEngine
     WaveletEvent(const RasterisedEvent<T> &event, const WaveletEngine &engine):
     _originalEvent(event),
     _rasterisedEvent(event),
     _engine(engine),
-    _doInvert(false){}
+    _doInvert(false),
+    _modifiedParticles(event.inputParticles()){}
 
     
     /// Return the wavelet coefficients
@@ -76,6 +78,8 @@ namespace NewWave{
     
     const T &particles()const{
       
+      if(!_doInvert) return _modifiedParticles;
+      
       _ratio = rasterisedEvent().pixels() / _originalEvent.pixels() ;
       
       _modifiedParticles.clear();
@@ -89,6 +93,8 @@ namespace NewWave{
           _modifiedParticles.back().setMomentum(p.momentum()*ratio);
         }
       }
+      
+      _doInvert = false;
       
       return _modifiedParticles;
     }

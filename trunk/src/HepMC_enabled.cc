@@ -43,6 +43,8 @@ namespace NewWave {
   template<>
   HepMC::GenEvent* const &WaveletEvent<HepMC::GenEvent *>::particles()const{
    
+    if(!_doInvert) return _modifiedParticles;
+    
     _ratio = rasterisedEvent().pixels() / _originalEvent.pixels() ;
     
     _modifiedParticles = new HepMC::GenEvent(*(_originalEvent.inputParticles()));
@@ -86,6 +88,8 @@ namespace NewWave {
     for(auto p: toUpdate){
       p->set_status(1);
     }
+    
+    _doInvert = false;
     
     return _modifiedParticles;
   }
