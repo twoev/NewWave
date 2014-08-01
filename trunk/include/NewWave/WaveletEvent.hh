@@ -91,7 +91,8 @@ namespace NewWave{
         double ratio = _ratio[ybin][phiBin];
         if(ratio > 0.){
           _modifiedParticles.push_back(p);
-          _modifiedParticles.back().setMomentum(p.momentum()*ratio);
+          scaleMomentum(ratio, _modifiedParticles.back());
+//          _modifiedParticles.back().setMomentum(p.momentum()*ratio);
         }
       }
       
