@@ -4,6 +4,7 @@
 #include "NewWave/RasterisedEvent.hh"
 #include "NewWave/WaveletEngine.hh"
 #include "NewWave/Utils.hh"
+#include "NewWave/MomentumHelpers.hh"
 
 #include <functional>
 #include <cmath>
@@ -85,8 +86,8 @@ namespace NewWave{
       _modifiedParticles.clear();
       
       for(auto p: _originalEvent.inputParticles()){
-        size_t ybin   = _originalEvent.pixelDefinition().yPixelIndex(p.momentum().rapidity());
-        size_t phiBin = _originalEvent.pixelDefinition().phiPixelIndex(p.momentum().phi());
+        size_t ybin   = _originalEvent.pixelDefinition().yPixelIndex(rapidity(p));
+        size_t phiBin = _originalEvent.pixelDefinition().phiPixelIndex(phi(p));
         double ratio = _ratio[ybin][phiBin];
         if(ratio > 0.){
           _modifiedParticles.push_back(p);

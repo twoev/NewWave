@@ -8,10 +8,8 @@
 #include <assert.h>
 #include <cmath>
 
-#include <iostream>
-
 namespace NewWave{
- 
+  
   /// Constant defining \f$2\pi\f$
   const double TWOPI = 2.0 * M_PI;
   
@@ -87,7 +85,12 @@ namespace NewWave{
     return output;
   }
   
-  
+  /// Divide each element of one vector by the other
+  /**
+   *  \param left the numerator
+   *  \param right the denominator
+   *  \return a vector in which each element i is left[i] / right[i]
+   */
   inline vector<double> operator / (vector<double> left,
                                     const vector<double> &right){
     
@@ -95,6 +98,7 @@ namespace NewWave{
     return left;
   }
   
+  /// Divide each element of one array by the other
 
   inline PixelArray operator / (PixelArray left, const PixelArray &right){
     

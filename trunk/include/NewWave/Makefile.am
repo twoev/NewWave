@@ -1,6 +1,7 @@
 SUBDIRS = .
 
 nobase_pkginclude_HEADERS = Exceptions.hh         \
+                            MomentumHelpers.hh    \
                             NewWave.hh            \
                             PixelArray.hh         \
                             PixelDefinition.hh    \

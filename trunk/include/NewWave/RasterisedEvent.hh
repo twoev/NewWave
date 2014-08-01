@@ -2,6 +2,7 @@
 #define NEWWAVE_RASTERISED_EVENT_HH
 
 #include "NewWave/PixelDefinition.hh"
+#include "NewWave/MomentumHelpers.hh"
 
 namespace HepMC{
   class GenEvent;
@@ -29,7 +30,7 @@ namespace NewWave {
     _input(T()){
       
       for(auto p: inputParticles){
-        if(_pixelDefn.covers(p.momentum().rapidity(), p.momentum().phi())){
+        if(_pixelDefn.covers(rapidity(p), phi(p) ) ){
           addParticle(p);
         }
       }
@@ -78,9 +79,9 @@ namespace NewWave {
     template<typename P>
     void addParticle(const P &particle){
       _input.push_back(particle);
-      addParticle(particle.momentum().rapidity(),
-                  particle.momentum().phi(),
-                  particle.momentum().pT());
+      addParticle(rapidity(particle),
+                  phi(particle),
+                  pT(particle));
     }
     
   };
