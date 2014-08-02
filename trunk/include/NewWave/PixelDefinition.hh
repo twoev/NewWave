@@ -7,6 +7,7 @@
 
 namespace NewWave{
   
+  using std::size_t;
   using std::vector;
   
   ///  Defines the range and coordinates of the "pixels" in the rasterised event

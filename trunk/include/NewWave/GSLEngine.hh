@@ -11,6 +11,7 @@
 
 namespace NewWave{
   
+  using std::size_t;
   using std::vector;
   
   class GSLEngine : public WaveletEngine{

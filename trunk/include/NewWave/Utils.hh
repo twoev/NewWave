@@ -10,6 +10,8 @@
 
 namespace NewWave{
   
+  using std::size_t;
+  
   /// Constant defining \f$2\pi\f$
   const double TWOPI = 2.0 * M_PI;
   

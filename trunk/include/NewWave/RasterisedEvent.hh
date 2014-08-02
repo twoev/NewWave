@@ -10,6 +10,8 @@ namespace HepMC{
 
 namespace NewWave {
   
+  using std::size_t;
+  
   /// A rasterised representation of the event
   template<typename T>
   class RasterisedEvent{

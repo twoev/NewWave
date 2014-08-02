@@ -15,6 +15,8 @@ namespace HepMC{
 
 namespace NewWave{
   
+  using std::size_t;
+  
   /// A representation of the event in the wavelet domain
   template<typename T>
   class WaveletEvent{

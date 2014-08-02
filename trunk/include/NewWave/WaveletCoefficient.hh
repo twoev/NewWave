@@ -5,6 +5,7 @@
 
 namespace NewWave {
   
+  using std::size_t;
   using std::vector;
   
   ///  Contains a single wavelet coefficient value, together with its levels
