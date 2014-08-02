@@ -8,27 +8,6 @@ namespace NewWave{
   using std::enable_if;
   using std::is_member_function_pointer;
   
-  template <typename T, typename NameGetter>
-  struct has_member_impl
-  {
-    typedef char matched_return_type;
-    typedef long unmatched_return_type;
-    
-    template <typename C>
-    static matched_return_type f(typename NameGetter::template get<C>*);
-    
-    template <typename C>
-    static unmatched_return_type f(...);
-    
-  public:
-    static const bool value = (sizeof(f<T>(0)) == sizeof(matched_return_type));
-  };
-  
-  template <typename T, typename NameGetter>
-  struct has_member :
-  std::integral_constant<bool, NewWave::has_member_impl<T, NameGetter>::value>
-  { };
-  
   template <typename T>
   struct has_momentum {
     
@@ -45,99 +24,169 @@ namespace NewWave{
     }
     
     static constexpr bool value = _value<T>(0);
+  };
+
+  template <typename T>
+  struct has_setMomentum {
     
+    template <typename U>
+    static constexpr bool
+    _value(typename enable_if<is_member_function_pointer<decltype(&U::setMomentum)>::value, U*>::type){
+      return true;
+    }
+    
+    template <typename U>
+    static constexpr bool
+    _value(...){
+      return false;
+    }
+    
+    static constexpr bool value = _value<T>(0);
   };
   
-  // checker funcs
-  struct check_pT{
-    template<typename T, double (T::*)() const = &T::pT >
-    struct get
-    { };
+  template <typename T>
+  struct has_pT {
+    
+    template <typename U>
+    static constexpr bool
+    _value(typename enable_if<is_member_function_pointer<decltype(&U::pT)>::value, U*>::type){
+      return true;
+    }
+    
+    template <typename U>
+    static constexpr bool
+    _value(...){
+      return false;
+    }
+    
+    static constexpr bool value = _value<T>(0);
   };
 
-  struct check_pt{
-    template<typename T, double (T::*)() const = &T::pt >
-    struct get
-    { };
+  template <typename T>
+  struct has_pt {
+    
+    template <typename U>
+    static constexpr bool
+    _value(typename enable_if<is_member_function_pointer<decltype(&U::pt)>::value, U*>::type){
+      return true;
+    }
+    
+    template <typename U>
+    static constexpr bool
+    _value(...){
+      return false;
+    }
+    
+    static constexpr bool value = _value<T>(0);
   };
   
-  struct check_PT{
-    template<typename T, double (T::*)() const = &T::PT >
-    struct get
-    { };
+  template <typename T>
+  struct has_PT {
+    
+    template <typename U>
+    static constexpr bool
+    _value(typename enable_if<is_member_function_pointer<decltype(&U::PT)>::value, U*>::type){
+      return true;
+    }
+    
+    template <typename U>
+    static constexpr bool
+    _value(...){
+      return false;
+    }
+    
+    static constexpr bool value = _value<T>(0);
   };
   
-  struct check_perp{
-    template<typename T, double (T::*)() const = &T::perp >
-    struct get
-    { };
+  template <typename T>
+  struct has_perp {
+    
+    template <typename U>
+    static constexpr bool
+    _value(typename enable_if<is_member_function_pointer<decltype(&U::perp)>::value, U*>::type){
+      return true;
+    }
+    
+    template <typename U>
+    static constexpr bool
+    _value(...){
+      return false;
+    }
+    
+    static constexpr bool value = _value<T>(0);
   };
   
-  struct check_rapidity{
-    template<typename T, double (T::*)() const = &T::rapidity >
-    struct get
-    { };
+  template <typename T>
+  struct has_rapidity {
+    
+    template <typename U>
+    static constexpr bool
+    _value(typename enable_if<is_member_function_pointer<decltype(&U::rapidity)>::value, U*>::type){
+      return true;
+    }
+    
+    template <typename U>
+    static constexpr bool
+    _value(...){
+      return false;
+    }
+    
+    static constexpr bool value = _value<T>(0);
   };
 
-  struct check_Rapidity{
-    template<typename T, double (T::*)() const = &T::Rapidity >
-    struct get
-    { };
+  template <typename T>
+  struct has_Rapidity {
+    
+    template <typename U>
+    static constexpr bool
+    _value(typename enable_if<is_member_function_pointer<decltype(&U::Rapidity)>::value, U*>::type){
+      return true;
+    }
+    
+    template <typename U>
+    static constexpr bool
+    _value(...){
+      return false;
+    }
+    
+    static constexpr bool value = _value<T>(0);
+  };
+  
+  template <typename T>
+  struct has_phi {
+    
+    template <typename U>
+    static constexpr bool
+    _value(typename enable_if<is_member_function_pointer<decltype(&U::phi)>::value, U*>::type){
+      return true;
+    }
+    
+    template <typename U>
+    static constexpr bool
+    _value(...){
+      return false;
+    }
+    
+    static constexpr bool value = _value<T>(0);
   };
 
-  struct check_phi{
-    template<typename T, double (T::*)() const = &T::phi >
-    struct get
-    { };
+  template <typename T>
+  struct has_Phi {
+    
+    template <typename U>
+    static constexpr bool
+    _value(typename enable_if<is_member_function_pointer<decltype(&U::Phi)>::value, U*>::type){
+      return true;
+    }
+    
+    template <typename U>
+    static constexpr bool
+    _value(...){
+      return false;
+    }
+    
+    static constexpr bool value = _value<T>(0);
   };
-  
-  struct check_Phi{
-    template<typename T, double (T::*)() const = &T::Phi >
-    struct get
-    { };
-  };
-  // end of checker funcs
-
-
-  template <typename T>
-  struct has_pT :
-  has_member<T, check_pT>
-  { };
-
-  template <typename T>
-  struct has_pt :
-  has_member<T, check_pt>
-  { };
-  
-  template <typename T>
-  struct has_PT :
-  has_member<T, check_PT>
-  { };
-  
-  template <typename T>
-  struct has_perp :
-  has_member<T, check_perp>
-  { };
-  
-  template <typename T>
-  struct has_rapidity :
-  has_member<T, check_rapidity>
-  { };
-  
-  template <typename T>
-  struct has_Rapidity :
-  has_member<T, check_Rapidity>
-  { };
-
-  template <typename T>
-  struct has_phi :
-  has_member<T, check_phi>
-  { };
-  
-  template <typename T>
-  struct has_Phi :
-  has_member<T, check_Phi>
-  { };
   
   template<typename T>
   typename enable_if<has_pT<T>::value, double>::type
@@ -193,7 +242,7 @@ namespace NewWave{
   }
   
   template<typename T>
-  typename enable_if<is_member_function_pointer<decltype(&T::momentum)>::value &&
+  typename enable_if<has_momentum<T>::value &&
   !has_Rapidity<T>::value &&
   !has_rapidity<T>::value, double>::type
   rapidity(const T &p){
@@ -214,7 +263,7 @@ namespace NewWave{
   }
   
   template<typename T>
-  typename enable_if<is_member_function_pointer<decltype(&T::momentum)>::value &&
+  typename enable_if<has_momentum<T>::value &&
   !has_Phi<T>::value &&
   !has_phi<T>::value, double>::type
   phi(const T &p){
@@ -223,8 +272,8 @@ namespace NewWave{
   
   
   template<typename T>
-  typename enable_if<is_member_function_pointer<decltype(&T::momentum)>::value &&
-  is_member_function_pointer<decltype(&T::setMomentum)>::value>::type
+  typename enable_if<has_momentum<T>::value &&
+  has_setMomentum<T>::value>::type
   scaleMomentum(double scale, T &p){
     p.setMomentum(p.momentum() * scale);
     return;
@@ -236,7 +285,6 @@ namespace NewWave{
     p *= scale;
     return;
   }
-  
   
 }
 
