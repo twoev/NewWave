@@ -94,7 +94,6 @@ namespace NewWave{
         if(ratio > 0.){
           _modifiedParticles.push_back(p);
           scaleMomentum(ratio, _modifiedParticles.back());
-//          _modifiedParticles.back().setMomentum(p.momentum()*ratio);
         }
       }
       

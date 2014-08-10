@@ -10,7 +10,8 @@ namespace NewWave{
   PixelDefinition::PixelDefinition(size_t nBins, double yMax, bool allowPadding):
   _nBinsPhi(nBins), _nBinsY(nBins), _nBins(nBins),
   _phiMin(0.), _yMin(-yMax),
-  _phiMax(TWOPI), _yMax(yMax){
+  _phiMax(TWOPI), _yMax(yMax),
+  _nLevels(0), _gotLevels(false){
     
     if(isOdd(_nBins)) throw PixelDefinitionException("Number of bins is odd");
     
@@ -40,7 +41,8 @@ namespace NewWave{
                                    size_t nBinsY, double yMin, double yMax,
                                    bool allowPhiPadding):
   _nBinsPhi(nBinsPhi), _nBinsY(nBinsY), _phiMin(phiMin), _yMin(yMin),
-  _phiMax(phiMax), _yMax(yMax){
+  _phiMax(phiMax), _yMax(yMax),
+  _nLevels(0), _gotLevels(false){
     
     _phiMin = mod2Pi(_phiMin);
     _phiMax = mod2Pi(_phiMax);
@@ -120,6 +122,27 @@ namespace NewWave{
     if(phi > _phiMax || phi < _phiMin) return false;
     
     return true;
+  }
+  
+  size_t PixelDefinition::nLevels()const{
+    
+    if(_gotLevels) return _nLevels;
+    
+    _nLevels = 0;
+    size_t nCoeffs = 1;
+    size_t counter = 0;
+    
+    for(size_t ii=0; ii != _nBins; ++ii){
+      ++counter;
+      
+      if(counter == nCoeffs){
+        counter = 0;
+        nCoeffs *=2;
+        ++_nLevels;
+      }
+    }
+    _gotLevels = true;
+    return _nLevels;
   }
   
 }

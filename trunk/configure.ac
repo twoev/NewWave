@@ -1,8 +1,8 @@
 AC_PREREQ(2.59)
 
-AC_INIT( [NewWave], [0.1.0], [jmonk@cern.ch], [NewWave])
+AC_INIT( [NewWave], [1.0.0], [jmonk@cern.ch], [NewWave])
 AC_CONFIG_AUX_DIR([config])
-AC_CONFIG_SRCDIR([src/WaveletEvent.cc])
+AC_CONFIG_SRCDIR([src/WaveletCoefficient.cc])
 AC_CONFIG_HEADERS([config/config.h])
 AM_INIT_AUTOMAKE
 AC_CONFIG_MACRO_DIR([m4])

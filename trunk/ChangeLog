@@ -1,3 +1,6 @@
+2014-08-10  James Monk  <jmonk@cern.ch>
+  * Add nLevels() to PixelDefinition
+
 2014-08-01  James Monk  <jmonk@cern.ch>
   * Add MomentumHelpers.hh - templated helper funcs to extract momentum quantities from particles
   * Use momentum helper funcs inside WaveletEvent and RasterisedEvent for more general particle case

@@ -97,6 +97,16 @@ namespace NewWave{
      */
     bool covers(double y, double phi)const;
     
+    /// Returns the number of wavelet levels
+    /**
+     *  The number of wavelet levels includes the smoothing coefficient.  
+     *  Increasing the number of levels by one doubles the number of
+     *  wavelet coefficients.
+     *
+     *  \return The number of wavelet levels
+     */
+    size_t nLevels()const;
+    
   private:
     
     size_t _nBinsPhi;
@@ -120,6 +130,9 @@ namespace NewWave{
     
     double _phi0;
     double _y0;
+    
+    mutable size_t _nLevels;
+    mutable bool _gotLevels;
     
     vector<double> _phiAxis;
     vector<double> _yAxis;
