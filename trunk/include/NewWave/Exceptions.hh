@@ -46,6 +46,13 @@ namespace NewWave {
     
   };
   
+  /// Thrown when a non-valid (i.e. negative) pile up threshold is set
+  class PileUpThresholdException : public std::runtime_error{
+  public:
+    PileUpThresholdException():
+    std::runtime_error("Pile up threshold must be positive"){};
+  };
+  
 }
 
 #endif

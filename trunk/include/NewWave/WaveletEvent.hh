@@ -3,6 +3,7 @@
 
 #include "NewWave/RasterisedEvent.hh"
 #include "NewWave/WaveletEngine.hh"
+#include "NewWave/Exceptions.hh"
 #include "NewWave/Utils.hh"
 #include "NewWave/MomentumHelpers.hh"
 
@@ -30,6 +31,7 @@ namespace NewWave{
     _rasterisedEvent(_originalEvent),
     _engine(engine),
     _doInvert(false),
+    _pileUpThreshold(0.),
     _modifiedParticles(particles){}
     
     /// Constructor from a RasterisedEvent and a WaveletEngine
@@ -79,6 +81,30 @@ namespace NewWave{
       return _originalEvent;
     }
     
+    /// Return the particles from the filtered event
+    /**
+     *  This inverts (if necessary) the wavelet transformation on the 
+     *  (possibly filtered) wavelet coefficients, de-rasterises the 
+     *  event and returns those particles for which the ratio of
+     *  output to input rasterised event is greater than the pile up 
+     *  threshold (see WaveletEvent<T>::setPileUpThreshold(double)).
+     *
+     *  The effect of this is to adjust the momenta of the output 
+     *  particles according to the wavelet analysis.  Those particles 
+     *  that fail the pile up threshold cut are removed.  By default, 
+     *  the pile up threshold is 0, so all particles are kept (barring 
+     *  those with negative pT).  The pile up threshold is likely to 
+     *  be dependent on the detector used, and should be tuned 
+     *  experimentally.
+     *
+     *  Note that the removal of pile up and the removal of soft 
+     *  contributions to the signal event should be performed in 
+     *  separate steps - first one should remove pile up, then run a 
+     *  second wavelet analysis on the remaining particles in order to 
+     *  remove soft activity from the signal.
+     *
+     *  \return T a list of particles modified by wavelet analysis
+     */
     const T &particles()const{
       
       if(!_doInvert) return _modifiedParticles;
@@ -91,7 +117,7 @@ namespace NewWave{
         size_t ybin   = _originalEvent.pixelDefinition().yPixelIndex(rapidity(p));
         size_t phiBin = _originalEvent.pixelDefinition().phiPixelIndex(phi(p));
         double ratio = _ratio[ybin][phiBin];
-        if(ratio > 0.){
+        if(ratio > _pileUpThreshold){
           _modifiedParticles.push_back(p);
           scaleMomentum(ratio, _modifiedParticles.back());
         }
@@ -119,7 +145,7 @@ namespace NewWave{
       return;
     }
 
-    /// Filter the event by setting selected coefficients to zero
+    /// Filter the event by setting the unselected coefficients to zero
     /**
      *  The std::function passed in here selects WaveletCoefficients and 
      *  should return true if they are to be kept, or false if rejected.
@@ -150,6 +176,15 @@ namespace NewWave{
       return;
     }
     
+    void setPileUpThreshold(double threshold){
+      if(threshold < 0.){
+        throw PileUpThresholdException();
+      }
+      _pileUpThreshold = threshold;
+      _doInvert = true;
+      return;
+    }
+    
   private:
     
     WaveletCoefficients &_coefficients()const{
@@ -168,6 +203,8 @@ namespace NewWave{
     mutable WaveletCoefficients _coeffs;
     
     mutable bool _doInvert;
+    
+    double _pileUpThreshold;
     
     mutable PixelArray _ratio;
     

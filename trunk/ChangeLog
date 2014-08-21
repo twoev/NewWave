@@ -1,3 +1,8 @@
+2014-08-21  James Monk  <jmonk@cern.ch>
+  * Add WaveletEvent::setPileUpThreshold(double), which gives a 
+    threshold for discarding pile up particles.  Any particle that,
+    after filtering, has pT < thresh * original pT is discarded
+
 2014-08-10  James Monk  <jmonk@cern.ch>
   * Add nLevels() to PixelDefinition
 
