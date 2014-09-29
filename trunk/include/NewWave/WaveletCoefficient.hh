@@ -28,13 +28,24 @@ namespace NewWave {
      *  \param phiLevel The \f$\phi\f$ level
      *  \param value The value of the coefficient
      */
-    WaveletCoefficient(size_t yLevel, size_t phiLevel, double value);
+    WaveletCoefficient(size_t yLevel, size_t phiLevel, size_t key, double value);
     
     /// The value of the coefficient
     /**
      *  \return The value of the coefficient
      */
     double value()const;
+    
+    /// Return a unique key for the coefficient
+    /**
+     *  In a given event, there is a fixed set of coefficients 
+     *  specifying the event.  Each one has a key that is unique within 
+     *  that set.  Coefficients from different events may have the same
+     *  key, of course.
+     *
+     *  \return The unique key for this WavaletCoefficient
+     */
+    size_t key()const;
     
     /// The rapidity level of the coefficient
     /**
@@ -65,6 +76,7 @@ namespace NewWave {
     double _value;
     size_t _yLevel;
     size_t _phiLevel;
+    size_t _key;
     
   };
   

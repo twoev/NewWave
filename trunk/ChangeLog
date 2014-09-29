@@ -1,3 +1,7 @@
+2014-09-29
+  *  Add "unique" key for wavelet coefficients (helps to compare coeffs)
+  *  GSLEngine fills in that key
+
 2014-08-21  James Monk  <jmonk@cern.ch>
   * Add WaveletEvent::setPileUpThreshold(double), which gives a 
     threshold for discarding pile up particles.  Any particle that,

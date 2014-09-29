@@ -48,6 +48,7 @@ namespace NewWave {
     for(size_t ii=0; ii != input.size(); ++ii){
       result.push_back(WaveletCoefficient(_yLevels[ii],
                                           _phiLevels[ii],
+                                          ii,
                                           input[ii]));
     }
     
