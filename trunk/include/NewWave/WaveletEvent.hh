@@ -1,7 +1,7 @@
 #ifndef NEWWAVE_WAVELET_EVENT_HH
 #define NEWWAVE_WAVELET_EVENT_HH
 
-#include "NewWave/RasterisedEvent.hh"
+#include "NewWave/PixelDefinition.hh"
 #include "NewWave/WaveletEngine.hh"
 #include "NewWave/Exceptions.hh"
 #include "NewWave/Utils.hh"
@@ -27,21 +27,15 @@ namespace NewWave{
     WaveletEvent(const T &particles,
                  const PixelDefinition &pixelDefn,
                  const WaveletEngine &engine):
-    _originalEvent(particles, pixelDefn),
-    _rasterisedEvent(_originalEvent),
+    _pixelDefn(pixelDefn),
+    _originalPixels(pixelDefn.makeEmptyPixelArray()),
     _engine(engine),
     _doInvert(false),
-    _pileUpThreshold(0.),
-    _modifiedParticles(particles){}
+    _pileUpThreshold(0.){
+      
+      _init(particles);
+    }
     
-    /// Constructor from a RasterisedEvent and a WaveletEngine
-    WaveletEvent(const RasterisedEvent<T> &event, const WaveletEngine &engine):
-    _originalEvent(event),
-    _rasterisedEvent(event),
-    _engine(engine),
-    _doInvert(false),
-    _modifiedParticles(event.inputParticles()){}
-
     
     /// Return the wavelet coefficients
     /**
@@ -53,32 +47,25 @@ namespace NewWave{
      */
     const WaveletCoefficients &coefficients()const{return _coefficients();}
     
-    /// Return the rasterised event in rapidity-\f$\phi\f$ space
+    /// Return the event as rasterised pixels in rapidity=\f$\phi\f$ space
     /**
      *  Return a copy of the RasterisedEvent that includes the effect of
      *  any processing in the wavelet domain (e.g. noise thresholding).
      *  This is obtained by inverse transforming the set of coefficients.
      *
-     *  \return The RasterisedEvent
+     *  \return The rasterised event as Pixels
      */
-    const RasterisedEvent<T> &rasterisedEvent()const{
+    const PixelArray pixels()const{
       
-      if(!_doInvert) return _rasterisedEvent;
+      if(!_doInvert) return _modifiedPixels;
       
-      const PixelArray &pixels = _engine.inverseTransform(coefficients());
-      _rasterisedEvent = RasterisedEvent<T>(pixels, _rasterisedEvent.pixelDefinition());
+      _modifiedPixels = _engine.inverseTransform(coefficients());
       _doInvert = false;
-      return _rasterisedEvent;
+      return _modifiedPixels;
     }
     
-    /// Return the original RasterisedEvent, unmodified
-    /**
-     *  Gives access to the event prior to any wavelet processing
-     *
-     *  \return The original event, unmodified by wavelet processing
-     */
-    const RasterisedEvent<T> &originalEvent()const{
-      return _originalEvent;
+    const PixelArray &originalPixels()const{
+      return _originalPixels;
     }
     
     /// Return the particles from the filtered event
@@ -109,13 +96,13 @@ namespace NewWave{
       
       if(!_doInvert) return _modifiedParticles;
       
-      _ratio = rasterisedEvent().pixels() / _originalEvent.pixels() ;
+      _ratio = pixels() / _originalPixels ;
       
       _modifiedParticles.clear();
       
-      for(auto p: _originalEvent.inputParticles()){
-        size_t ybin   = _originalEvent.pixelDefinition().yPixelIndex(rapidity(p));
-        size_t phiBin = _originalEvent.pixelDefinition().phiPixelIndex(phi(p));
+      for(auto p: _originalParticles){
+        size_t ybin   = _pixelDefn.yPixelIndex(rapidity(p));
+        size_t phiBin = _pixelDefn.phiPixelIndex(phi(p));
         double ratio = _ratio[ybin][phiBin];
         if(ratio > _pileUpThreshold){
           _modifiedParticles.push_back(p);
@@ -189,15 +176,37 @@ namespace NewWave{
     
     WaveletCoefficients &_coefficients()const{
       if(_coeffs.size() != 0) return _coeffs;
-      _coeffs = _engine.transform(_rasterisedEvent.pixels());
+      _coeffs = _engine.transform(_originalPixels);
       return _coeffs;
     }
 
+    void _init(const T &input){
+      
+      for(auto p: input){
+        if(_pixelDefn.covers(rapidity(p), phi(p))){
+          _originalParticles.push_back(p);
+          _addParticle(rapidity(p), phi(p), pT(p));
+        }
+      }
+      
+    }
+    
+    void _addParticle(double rapidity, double phi, double pT){
+      size_t ybin   = _pixelDefn.yPixelIndex(rapidity);
+      size_t phiBin = _pixelDefn.phiPixelIndex(phi);
+      _originalPixels[ybin][phiBin] += pT;
+      return;
+    }
+    
     HepMC::GenEvent *_genEvent()const;
     
+    PixelDefinition _pixelDefn;
     
-    RasterisedEvent<T> _originalEvent;
-    mutable RasterisedEvent<T> _rasterisedEvent;
+    mutable PixelArray _modifiedPixels;
+    PixelArray _originalPixels;
+    
+    T _originalParticles;
+    
     const WaveletEngine &_engine;
     
     mutable WaveletCoefficients _coeffs;
@@ -216,6 +225,8 @@ namespace NewWave{
   template<>
   HepMC::GenEvent* const &WaveletEvent<HepMC::GenEvent *>::particles()const;
   
+  template<>
+  void WaveletEvent<HepMC::GenEvent*>::_init(HepMC::GenEvent* const &input);
   
   
 }

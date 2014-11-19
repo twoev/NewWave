@@ -1,4 +1,10 @@
-2014-09-29
+2014-11-19  James Monk  <jmonk@cern.ch>
+  * Removed RasterisedEvent from use (still present in svn)
+    Slight speed up as a result of not copying array
+  * Added Momentum.hh - not used yet, but possible flexibility in
+    defining momentum functions for retrieving (pseudo) rapidity or eT/pT
+
+2014-09-29  James Monk  <jmonk@cern.ch>
   *  Add "unique" key for wavelet coefficients (helps to compare coeffs)
   *  GSLEngine fills in that key
 

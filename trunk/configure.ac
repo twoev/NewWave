@@ -85,9 +85,12 @@ AC_SUBST(AM_CXXFLAGS)
 AC_SUBST(AM_CPPFLAGS)
 
 AC_CONFIG_FILES([ Makefile
+                  bin/Makefile
                   doc/Makefile
                   src/Makefile
                   include/Makefile
                   include/NewWave/Makefile ])
+
+AC_CONFIG_FILES([bin/newwave-config])
 
 AC_OUTPUT

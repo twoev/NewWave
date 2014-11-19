@@ -3,7 +3,6 @@
 
 #include "NewWave/PixelDefinition.hh"
 #include "NewWave/Exceptions.hh"
-#include "NewWave/RasterisedEvent.hh"
 #include "NewWave/WaveletEvent.hh"
 
 

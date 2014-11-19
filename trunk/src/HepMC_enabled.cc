@@ -1,19 +1,14 @@
-#include "NewWave/RasterisedEvent.hh"
 #include "NewWave/WaveletEvent.hh"
-
 #include "HepMC/GenEvent.h"
 
 namespace NewWave {
-  
+
   template<>
-  RasterisedEvent<HepMC::GenEvent*>::RasterisedEvent(HepMC::GenEvent* const &event,
-                                                     const PixelDefinition &pixelDefn):
-  _pixelDefn(pixelDefn),
-  _pixels(pixelDefn.makeEmptyPixelArray()){
+  void WaveletEvent<HepMC::GenEvent*>::_init(HepMC::GenEvent* const &input){
+    _originalParticles = input;
     
-    _input = event;
-    for(HepMC::GenEvent::particle_const_iterator p=event->particles_begin();
-        p != event->particles_end(); ++p){
+    for(HepMC::GenEvent::particle_const_iterator p=input->particles_begin();
+        p != input->particles_end(); ++p){
       if((*p)->status() != 1) continue;
       
       double pz = (*p)->momentum().pz();
@@ -21,12 +16,14 @@ namespace NewWave {
       
       double rapidity = 0.5 * log((e + pz) / (e-pz));
       if(_pixelDefn.covers(rapidity, (*p)->momentum().phi())){
-        addParticle(rapidity, (*p)->momentum().phi(), (*p)->momentum().perp());
+        _addParticle(rapidity, (*p)->momentum().phi(), (*p)->momentum().perp());
       }
     }
     
+    return;
   }
-
+  
+  
   HepMC::FourVector operator *(double r, HepMC::FourVector right){
     right.setPx(r*right.px());
     right.setPy(r*right.py());
@@ -45,9 +42,9 @@ namespace NewWave {
    
     if(!_doInvert) return _modifiedParticles;
     
-    _ratio = rasterisedEvent().pixels() / _originalEvent.pixels() ;
+    _ratio = pixels() / _originalPixels ;
     
-    _modifiedParticles = new HepMC::GenEvent(*(_originalEvent.inputParticles()));
+    _modifiedParticles = new HepMC::GenEvent(*(_originalParticles));
     
     vector<HepMC::GenParticle *> toUpdate;
     
@@ -61,10 +58,10 @@ namespace NewWave {
       double pz = (*p)->momentum().pz();
       double e = (*p)->momentum().e();
       double rapidity = 0.5 * log((e + pz) / (e-pz));
-      if(_originalEvent.pixelDefinition().covers(rapidity, (*p)->momentum().phi())){
+      if(_pixelDefn.covers(rapidity, (*p)->momentum().phi())){
         
-        size_t ybin   = _originalEvent.pixelDefinition().yPixelIndex(rapidity);
-        size_t phiBin = _originalEvent.pixelDefinition().phiPixelIndex((*p)->momentum().phi());
+        size_t ybin   = _pixelDefn.yPixelIndex(rapidity);
+        size_t phiBin = _pixelDefn.phiPixelIndex((*p)->momentum().phi());
         double ratio = _ratio[ybin][phiBin];
         if(ratio > 0){
         
