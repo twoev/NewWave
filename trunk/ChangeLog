@@ -1,3 +1,10 @@
+2014-11-24  James Monk  <jmonk@cern.ch>
+*  Remove Momentum.hh again :/
+*  Add Momentum<T> class to MomentumHelpers.hh
+*  Momentumm functions used now defineable in WaveletEvent via templated
+   class, which defaults to Momentum<T>.  New definitions can be used to
+   provide e.g. different pT or rapidity functions.
+
 2014-11-19  James Monk  <jmonk@cern.ch>
   * Removed RasterisedEvent from use (still present in svn)
     Slight speed up as a result of not copying array

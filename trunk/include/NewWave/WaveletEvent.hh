@@ -19,7 +19,7 @@ namespace NewWave{
   using std::size_t;
   
   /// A representation of the event in the wavelet domain
-  template<typename T>
+  template<typename T, typename momentum_type = Momentum<T> >
   class WaveletEvent{
     
   public:
@@ -35,7 +35,6 @@ namespace NewWave{
       
       _init(particles);
     }
-    
     
     /// Return the wavelet coefficients
     /**
@@ -101,12 +100,13 @@ namespace NewWave{
       _modifiedParticles.clear();
       
       for(auto p: _originalParticles){
-        size_t ybin   = _pixelDefn.yPixelIndex(rapidity(p));
-        size_t phiBin = _pixelDefn.phiPixelIndex(phi(p));
+        size_t ybin   = _pixelDefn.yPixelIndex(momentum_type::rapidity(p));
+        size_t phiBin = _pixelDefn.phiPixelIndex(momentum_type::phi(p));
         double ratio = _ratio[ybin][phiBin];
         if(ratio > _pileUpThreshold){
           _modifiedParticles.push_back(p);
-          scaleMomentum(ratio, _modifiedParticles.back());
+          momentum_type::scale(ratio, _modifiedParticles.back());
+
         }
       }
       
@@ -183,9 +183,9 @@ namespace NewWave{
     void _init(const T &input){
       
       for(auto p: input){
-        if(_pixelDefn.covers(rapidity(p), phi(p))){
+        if(_pixelDefn.covers(momentum_type::rapidity(p), momentum_type::phi(p))){
           _originalParticles.push_back(p);
-          _addParticle(rapidity(p), phi(p), pT(p));
+          _addParticle(momentum_type::rapidity(p), momentum_type::phi(p), momentum_type::pT(p));
         }
       }
       
@@ -220,7 +220,6 @@ namespace NewWave{
     mutable T _modifiedParticles;
     
   };
-  
   
   template<>
   HepMC::GenEvent* const &WaveletEvent<HepMC::GenEvent *>::particles()const;

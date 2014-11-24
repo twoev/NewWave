@@ -286,6 +286,32 @@ namespace NewWave{
     return;
   }
   
+  template<typename T>
+  class Momentum {
+    
+  public:
+    
+    using element_type = typename T::value_type;
+    
+    inline static double rapidity(const element_type &p){
+      return NewWave::rapidity(p);
+    }
+    
+    inline static double pT(const element_type &p){
+      return NewWave::pT(p);
+    }
+    
+    inline static double phi(const element_type &p){
+      return NewWave::phi(p);
+    }
+    
+    inline static void scale(double s, element_type &p){
+      NewWave::scaleMomentum(s, p);
+      return;
+    }
+    
+  };
+  
 }
 
 #endif

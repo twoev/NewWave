@@ -2,7 +2,7 @@
 #include "HepMC/GenEvent.h"
 
 namespace NewWave {
-
+  
   template<>
   void WaveletEvent<HepMC::GenEvent*>::_init(HepMC::GenEvent* const &input){
     _originalParticles = input;
