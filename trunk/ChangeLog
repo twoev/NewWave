@@ -1,7 +1,12 @@
+2014-11-26  James Monk  <jmonk@cern.ch>
+  *  replace Momentum::scale with Momentum::update - this allows the decision
+     on what to do with rejected particles to be user-defined.
+     e.g. particles can be modified in place, zeroed instead of rejected
+
 2014-11-24  James Monk  <jmonk@cern.ch>
-*  Remove Momentum.hh again :/
-*  Add Momentum<T> class to MomentumHelpers.hh
-*  Momentumm functions used now defineable in WaveletEvent via templated
+  *  Remove Momentum.hh again :/
+  *  Add Momentum<T> class to MomentumHelpers.hh
+  *  Momentumm functions used now defineable in WaveletEvent via templated
    class, which defaults to Momentum<T>.  New definitions can be used to
    provide e.g. different pT or rapidity functions.
 

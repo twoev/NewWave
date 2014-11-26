@@ -305,8 +305,35 @@ namespace NewWave{
       return NewWave::phi(p);
     }
     
-    inline static void scale(double s, element_type &p){
-      NewWave::scaleMomentum(s, p);
+    /// Update a container of type T with a modified particle
+    /**
+     *  This decides whether a particle should be kept, and if so modifies
+     *  it according to the wavelet filtering and inserts it into the 
+     *  container of particles
+     *
+     *  Providing a different version of this function allows the logic
+     *  determining what to do with rejected particles to be changed. 
+     *  Some frameworks require the rejected particles to be zeroed, 
+     *  rather than discarded.
+     *
+     *  \param toModify the list of particles to modify.  Normally the 
+     *         resulting particles are simply pushed_back into this 
+     *         container
+     *  \param particle the input particle to test, modify and store
+     *  \param ratio the ratio of before/after filtering, which 
+     *         determines whether a particle is kept and how it is 
+     *         modified
+     *  \param threshold the threshold for (pile up) rejection.  
+     *         Typically, if the ratio is below threshold, a particle is
+     *         rejected
+     */
+    
+    inline static void update(T &toModify, element_type &particle, double ratio, double threshold){
+      if(ratio > threshold){
+        NewWave::scaleMomentum(ratio, particle);
+        toModify.push_back(particle);
+      }
+      
       return;
     }
     

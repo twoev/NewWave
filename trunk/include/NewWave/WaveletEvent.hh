@@ -103,11 +103,9 @@ namespace NewWave{
         size_t ybin   = _pixelDefn.yPixelIndex(momentum_type::rapidity(p));
         size_t phiBin = _pixelDefn.phiPixelIndex(momentum_type::phi(p));
         double ratio = _ratio[ybin][phiBin];
-        if(ratio > _pileUpThreshold){
-          _modifiedParticles.push_back(p);
-          momentum_type::scale(ratio, _modifiedParticles.back());
-
-        }
+        
+        momentum_type::update(_modifiedParticles, p, ratio, _pileUpThreshold);
+        
       }
       
       _doInvert = false;
