@@ -128,7 +128,7 @@ namespace NewWave{
     
     if(_gotLevels) return _nLevels;
     
-    _nLevels = 0;
+    _nLevels = 1;
     size_t nCoeffs = 1;
     size_t counter = 0;
     

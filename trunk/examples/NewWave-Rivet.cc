@@ -9,7 +9,7 @@
 
 namespace Rivet {
 
-
+  /// Example Rivet analysis using NewWave
   class NewWave_Example : public Analysis {
   public:
 

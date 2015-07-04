@@ -2,7 +2,8 @@ SUBDIRS = .
 
 lib_LTLIBRARIES = libNewWave.la
 
-libNewWave_la_SOURCES = PixelDefinition.cc    \
+libNewWave_la_SOURCES = FrequencyBand.cc      \
+                        PixelDefinition.cc    \
                         WaveletCoefficient.cc 
 
 libNewWave_la_CPPFLAGS  = $(AM_CPPFLAGS)

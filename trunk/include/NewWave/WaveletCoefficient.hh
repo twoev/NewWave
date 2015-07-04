@@ -43,7 +43,7 @@ namespace NewWave {
      *  that set.  Coefficients from different events may have the same
      *  key, of course.
      *
-     *  \return The unique key for this WavaletCoefficient
+     *  \return The unique key for this WaveletCoefficient
      */
     size_t key()const;
     
@@ -70,6 +70,17 @@ namespace NewWave {
      * \param val the new value of the coefficient
      */
     void setValue(double val);
+    
+    /// Give a hash that is unique to the FrequencyBand this coefficient belongs in
+    /**
+     *  The hash is determined by the y-level, the \f$\phi\f$-level, and 
+     *  the total number of levels used.  The hash is simply 
+     *
+     *  \f$(level_{\phi}) + (N_{levels} + 1)\times(level_{y})\f$
+     *
+     *  \param nLevels the total number of levels specified in the transform
+     */
+    int frequencyHash(int nLevels)const;
     
   private:
     

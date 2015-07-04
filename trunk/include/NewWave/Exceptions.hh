@@ -7,6 +7,7 @@
 namespace NewWave {
   
   using std::string;
+  using std::to_string;
   
   /// Thrown when a bad definition of the pixels is used
   class PixelDefinitionException : public std::runtime_error{
@@ -51,6 +52,18 @@ namespace NewWave {
   public:
     PileUpThresholdException():
     std::runtime_error("Pile up threshold must be positive"){};
+  };
+  
+  /// Thrown when an attempt is made to access an invalid FrequencyBand
+  class InvalidFrequencyBand: public std::runtime_error{
+  public:
+    InvalidFrequencyBand(): std::runtime_error("Invalid number of coefficients in frequency band"){}
+  };
+  
+  /// Thrown when an attempt is made to add a coefficient to a non-matching frequency band
+  class WrongCoefficient: public std::runtime_error{
+  public:
+    WrongCoefficient(int y, int phi, int expectedY, int expectedPhi): std::runtime_error("Wavelet levels of coefficient do not match the frequency band: coefficient = {" + to_string(y) + "," + to_string(phi) + "}, expected = {" + to_string(expectedY) + ", " + to_string(expectedPhi) + "}"){}
   };
   
 }

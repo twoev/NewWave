@@ -4,11 +4,15 @@
 #include "NewWave/PixelDefinition.hh"
 #include "NewWave/WaveletEngine.hh"
 #include "NewWave/Exceptions.hh"
+#include "NewWave/FrequencyBand.hh"
 #include "NewWave/Utils.hh"
 #include "NewWave/MomentumHelpers.hh"
 
 #include <functional>
+#include <map>
 #include <cmath>
+
+#include <iostream>
 
 namespace HepMC{
   class GenEvent;
@@ -17,6 +21,8 @@ namespace HepMC{
 namespace NewWave{
   
   using std::size_t;
+  using std::map;
+  using std::make_pair;
   
   /// A representation of the event in the wavelet domain
   template<typename T, typename momentum_type = Momentum<T> >
@@ -45,6 +51,27 @@ namespace NewWave{
      *  \return The wavelet coefficients
      */
     const WaveletCoefficients &coefficients()const{return _coefficients();}
+    
+    const FrequencyBands &frequencyBands()const{
+      
+      if(_frequencyBands.size() == _pixelDefn.nLevels() * _pixelDefn.nLevels()) return _frequencyBands;
+      
+      _frequencyBands.clear();
+      _bandLookup.clear();
+            
+      for(const auto &c: _coefficients()){
+        int hash = c.frequencyHash(_pixelDefn.nLevels());
+        map<int, int>::const_iterator index = _bandLookup.find(hash);
+        if(index==_bandLookup.end()){
+          index = _bandLookup.insert(make_pair(hash, _frequencyBands.size())).first;
+          _frequencyBands.push_back(FrequencyBand(c.yLevel(), c.phiLevel()));
+        }
+        
+        _frequencyBands[index->second].addCoefficient(c);
+      }
+      
+      return _frequencyBands;
+    }
     
     /// Return the event as rasterised pixels in rapidity=\f$\phi\f$ space
     /**
@@ -177,7 +204,7 @@ namespace NewWave{
       _coeffs = _engine.transform(_originalPixels);
       return _coeffs;
     }
-
+    
     void _init(const T &input){
       
       for(auto p: input){
@@ -208,6 +235,9 @@ namespace NewWave{
     const WaveletEngine &_engine;
     
     mutable WaveletCoefficients _coeffs;
+    
+    mutable FrequencyBands _frequencyBands;
+    mutable map<int, int> _bandLookup;
     
     mutable bool _doInvert;
     

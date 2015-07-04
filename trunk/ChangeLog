@@ -1,3 +1,7 @@
+2015-07-05  James Monk  <jmonk@cern.ch>
+  *  Add FrequencyBand to hols all coefficients withing a frequency band
+*  Update to PixelDefinition::nLevels, which was previously returning one too few
+
 2014-11-26  James Monk  <jmonk@cern.ch>
   *  replace Momentum::scale with Momentum::update - this allows the decision
      on what to do with rejected particles to be user-defined.

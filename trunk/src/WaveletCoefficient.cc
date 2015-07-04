@@ -31,5 +31,9 @@ namespace NewWave {
     return;
   }
   
+  int WaveletCoefficient::frequencyHash(int nLevels)const{
+    return phiLevel() + (nLevels + 1) * yLevel();
+  }
+  
 }
 
