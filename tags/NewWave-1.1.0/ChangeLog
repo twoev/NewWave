@@ -1,0 +1,66 @@
+2015-07-05  James Monk  <jmonk@cern.ch>
+  *  Add FrequencyBand to hols all coefficients withing a frequency band
+*  Update to PixelDefinition::nLevels, which was previously returning one too few
+
+2014-11-26  James Monk  <jmonk@cern.ch>
+  *  replace Momentum::scale with Momentum::update - this allows the decision
+     on what to do with rejected particles to be user-defined.
+     e.g. particles can be modified in place, zeroed instead of rejected
+
+2014-11-24  James Monk  <jmonk@cern.ch>
+  *  Remove Momentum.hh again :/
+  *  Add Momentum<T> class to MomentumHelpers.hh
+  *  Momentumm functions used now defineable in WaveletEvent via templated
+   class, which defaults to Momentum<T>.  New definitions can be used to
+   provide e.g. different pT or rapidity functions.
+
+2014-11-19  James Monk  <jmonk@cern.ch>
+  * Removed RasterisedEvent from use (still present in svn)
+    Slight speed up as a result of not copying array
+  * Added Momentum.hh - not used yet, but possible flexibility in
+    defining momentum functions for retrieving (pseudo) rapidity or eT/pT
+
+2014-09-29  James Monk  <jmonk@cern.ch>
+  *  Add "unique" key for wavelet coefficients (helps to compare coeffs)
+  *  GSLEngine fills in that key
+
+2014-08-21  James Monk  <jmonk@cern.ch>
+  * Add WaveletEvent::setPileUpThreshold(double), which gives a 
+    threshold for discarding pile up particles.  Any particle that,
+    after filtering, has pT < thresh * original pT is discarded
+
+2014-08-10  James Monk  <jmonk@cern.ch>
+  * Add nLevels() to PixelDefinition
+
+2014-08-01  James Monk  <jmonk@cern.ch>
+  * Add MomentumHelpers.hh - templated helper funcs to extract momentum quantities from particles
+  * Use momentum helper funcs inside WaveletEvent and RasterisedEvent for more general particle case
+
+2014-07-28  James Monk  <jmonk@cern.ch>
+  * Initialise particles to input particles for WaveletEvent
+
+2014-06-18  James Monk <jmonk@cern.ch>
+  * Started HepMC example
+  * HepMC template specialisations work now
+
+2014-06-16  James Monk  <jmonk@cern.ch>
+  * Check that particle is covered by PixelDefinition now added
+  * Can construct WaveletEvent directly from list of particles
+  * Filter method on WaveletEvent - allow filtering by user defined function
+
+2014-06-15  James Monk  <jmonk@cern.ch>
+  * More fixes - denoise works now in Rivet example
+  * Todo: need check on particle rapidity in RasterisedEvent because Rivet particles are selected by *pseudo* rapidity.
+
+2014-06-13  James Monk  <jmonk@cern.ch>
+  * Templated WaveletEvent so it can return particles
+  * Divide methods for PixelArray in Utils.hh
+
+2014-06-12  James Monk  <jmonk@cern.ch>
+  * Rivet example now compiles, though not useful yet
+  * Moved GSL_enabled.cc to GSLEngine.cc - if GSL not present, simply can't make one, no need for GSL_disabled.cc
+
+2014-06-10  James Monk  <jmonk@cern.ch>
+  * Add header file for NewWave/GSLEngine.hh, otherwise we have no way of instantiating one!
+  * Put all relevant headers in a convenient NewWave.hh
+  * Started example Rivet routine in examples/NewWave-Rivet.cc - it doesn't compile yet, but you should get the idea of the intended use
