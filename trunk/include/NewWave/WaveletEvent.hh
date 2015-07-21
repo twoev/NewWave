@@ -36,7 +36,7 @@ namespace NewWave{
     _pixelDefn(pixelDefn),
     _originalPixels(pixelDefn.makeEmptyPixelArray()),
     _engine(engine),
-    _doInvert(false),
+    _doInvert(true),
     _pileUpThreshold(0.){
       
       _init(particles);
