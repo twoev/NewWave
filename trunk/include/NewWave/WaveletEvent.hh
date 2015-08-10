@@ -1,6 +1,7 @@
 #ifndef NEWWAVE_WAVELET_EVENT_HH
 #define NEWWAVE_WAVELET_EVENT_HH
 
+#include "NewWave/WaveletBaseEvent.hh"
 #include "NewWave/PixelDefinition.hh"
 #include "NewWave/WaveletEngine.hh"
 #include "NewWave/Exceptions.hh"
@@ -26,13 +27,13 @@ namespace NewWave{
   
   /// A representation of the event in the wavelet domain
   template<typename T, typename momentum_type = Momentum<T> >
-  class WaveletEvent{
+  class WaveletEvent : public WaveletBaseEvent{
     
   public:
     
     WaveletEvent(const T &particles,
                  const PixelDefinition &pixelDefn,
-                 const WaveletEngine &engine):
+                 const WaveletEngine &engine): WaveletBaseEvent(),
     _pixelDefn(pixelDefn),
     _originalPixels(pixelDefn.makeEmptyPixelArray()),
     _engine(engine),
@@ -73,6 +74,21 @@ namespace NewWave{
       return _frequencyBands;
     }
     
+    const FrequencyBand &frequencyBand(const WaveletCoefficient &coeff)const{
+      int hash = coeff.frequencyHash(_pixelDefn.nLevels());
+      frequencyBands();
+      map<int, int>::const_iterator index = _bandLookup.find(hash);
+      if(index==_bandLookup.end()){
+        throw InvalidFrequencyBand();
+      }
+      
+      return _frequencyBands[index->second];
+    }
+    
+    const PixelDefinition &pixelDefn()const{
+      return _pixelDefn;
+    }
+    
     /// Return the event as rasterised pixels in rapidity=\f$\phi\f$ space
     /**
      *  Return a copy of the RasterisedEvent that includes the effect of
@@ -81,7 +97,7 @@ namespace NewWave{
      *
      *  \return The rasterised event as Pixels
      */
-    const PixelArray pixels()const{
+    const PixelArray &pixels()const{
       
       if(!_doInvert) return _modifiedPixels;
       
@@ -188,6 +204,18 @@ namespace NewWave{
       return;
     }
     
+    void scale(const std::function<double (const WaveletCoefficient&)> &scaler){
+      for(WaveletCoefficient &coeff: _coefficients()){
+        double s = scaler(coeff);
+        coeff.setValue(s*coeff.value());
+      }
+      
+      _doInvert = true;
+      
+      return;
+    }
+    
+    
     void setPileUpThreshold(double threshold){
       if(threshold < 0.){
         throw PileUpThresholdException();
@@ -202,6 +230,10 @@ namespace NewWave{
     WaveletCoefficients &_coefficients()const{
       if(_coeffs.size() != 0) return _coeffs;
       _coeffs = _engine.transform(_originalPixels);
+      for(auto &c: _coeffs){
+        setEvent(c);
+      }
+      
       return _coeffs;
     }
     

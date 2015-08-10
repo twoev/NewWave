@@ -66,6 +66,11 @@ namespace NewWave {
     WrongCoefficient(int y, int phi, int expectedY, int expectedPhi): std::runtime_error("Wavelet levels of coefficient do not match the frequency band: coefficient = {" + to_string(y) + "," + to_string(phi) + "}, expected = {" + to_string(expectedY) + ", " + to_string(expectedPhi) + "}"){}
   };
   
+  class NullEvent: public std::runtime_error{
+  public:
+    NullEvent(): std::runtime_error("WaveletEvent is null"){}
+  };
+  
 }
 
 #endif

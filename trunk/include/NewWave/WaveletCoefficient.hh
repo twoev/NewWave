@@ -1,12 +1,13 @@
 #ifndef NEWWAVE_WAVELET_COEFFICIENT_HH
 #define NEWWAVE_WAVELET_COEFFICIENT_HH
 
-#include <vector>
+#include "NewWave/FrequencyBand.fh"
+#include "NewWave/WaveletCoefficient.fh"
+#include "NewWave/WaveletBaseEvent.hh"
 
 namespace NewWave {
   
   using std::size_t;
-  using std::vector;
   
   ///  Contains a single wavelet coefficient value, together with its levels
   /**
@@ -49,7 +50,7 @@ namespace NewWave {
     
     /// The rapidity level of the coefficient
     /**
-     *  The rapidity level gives the scale of the wavelet basis funciton in
+     *  The rapidity level gives the scale of the wavelet basis function in
      *  the rapidity axis.  The scale is proportional to \f$1 / 2^{l}\f$
      *
      *  \return The rapidity level
@@ -82,6 +83,19 @@ namespace NewWave {
      */
     int frequencyHash(int nLevels)const;
     
+    /// Give a hash that is unique to the FrequencyBand this coefficient belongs in
+    /**
+     *  The hash is determined by the y-level, the \f$\phi\f$-level, and
+     *  the total number of levels used.  The hash is simply
+     *
+     *  \f$(level_{\phi}) + (N_{levels} + 1)\times(level_{y})\f$
+     *
+     *  \param nLevels the total number of levels specified in the transform
+     */
+    int frequencyHash()const;
+    
+    const FrequencyBand &frequencyBand()const;
+    
   private:
     
     double _value;
@@ -89,9 +103,11 @@ namespace NewWave {
     size_t _phiLevel;
     size_t _key;
     
+    friend class WaveletBaseEvent;
+    
+    const WaveletBaseEvent *_event;
+    
   };
-  
-  typedef vector<WaveletCoefficient> WaveletCoefficients;
   
 }
 

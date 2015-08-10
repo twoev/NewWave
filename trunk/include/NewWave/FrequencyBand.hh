@@ -2,12 +2,9 @@
 #define NEWWAVE_FREQUENCY_BAND_HH
 
 #include "NewWave/WaveletCoefficient.hh"
-
-#include <vector>
+#include "NewWave/FrequencyBand.fh"
 
 namespace NewWave {
-  
-  using std::vector;
   
   /// A frequency band contains all the wavelet coefficients of the same angular scale
   /**
@@ -66,9 +63,6 @@ namespace NewWave {
     WaveletCoefficients _coefficients;
     
   };
-  
-  typedef vector<FrequencyBand> FrequencyBands;
-
   
 }
 

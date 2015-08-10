@@ -1,3 +1,13 @@
+2015-08-10  James Monk  <jmonk@cern.ch>
+  *  WaveletEvent has scale member to apply user-definable scaling function
+     to the coefficients
+  *  PixelArray is returned from the WaveletEvent by reference
+  *  WaveletEvent::frequencyBand(const WaveletCoefficient&) gives the FrequencyBand
+     to which a given coefficient belongs
+  *  WaveletCoefficient contains a pointer to a WaveletBaseEvent, base interface
+     of the WaveletEvent class.  This allows a coefficien to know its own
+     FrequencyBand
+
 2015-07-21  James Monk  <jmonk@cern.ch>
   *  Make sure output pixels are filled even if event is not filtered yet.
 

@@ -1,4 +1,6 @@
 #include "NewWave/WaveletCoefficient.hh"
+#include "NewWave/Exceptions.hh"
+#include "NewWave/FrequencyBand.hh"
 
 namespace NewWave {
   
@@ -8,7 +10,8 @@ namespace NewWave {
                                          double value):
   _value(value),
   _yLevel(yLevel), _phiLevel(phiLevel),
-  _key(key){}
+  _key(key),
+  _event(0){}
   
   double WaveletCoefficient::value()const{
     return _value;
@@ -33,6 +36,16 @@ namespace NewWave {
   
   int WaveletCoefficient::frequencyHash(int nLevels)const{
     return phiLevel() + (nLevels + 1) * yLevel();
+  }
+
+  int WaveletCoefficient::frequencyHash()const{
+    if(_event ==0) throw NullEvent();
+    
+    return frequencyHash(_event->pixelDefn().nLevels());
+  }
+  
+  const FrequencyBand &WaveletCoefficient::frequencyBand()const{
+    return _event->frequencyBand(*this);
   }
   
 }
