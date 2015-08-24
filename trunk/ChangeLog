@@ -1,3 +1,6 @@
+2015-08-24  James Monk  <jmonk@cern.ch>
+  *  Add WaveletEvent::setScaleParticles(bool) to switch off output particle scaling
+
 2015-08-10  James Monk  <jmonk@cern.ch>
   *  WaveletEvent has scale member to apply user-definable scaling function
      to the coefficients

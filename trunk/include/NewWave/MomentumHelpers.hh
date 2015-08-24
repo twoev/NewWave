@@ -328,9 +328,9 @@ namespace NewWave{
      *         rejected
      */
     
-    inline static void update(T &toModify, element_type &particle, double ratio, double threshold){
+    inline static void update(T &toModify, element_type &particle, double ratio, double threshold, bool doScale=true){
       if(ratio > threshold){
-        NewWave::scaleMomentum(ratio, particle);
+        if(doScale) NewWave::scaleMomentum(ratio, particle);
         toModify.push_back(particle);
       }
       

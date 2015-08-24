@@ -38,7 +38,8 @@ namespace NewWave{
     _originalPixels(pixelDefn.makeEmptyPixelArray()),
     _engine(engine),
     _doInvert(true),
-    _pileUpThreshold(0.){
+    _pileUpThreshold(0.),
+    _doScale(true){
       
       _init(particles);
     }
@@ -147,7 +148,7 @@ namespace NewWave{
         size_t phiBin = _pixelDefn.phiPixelIndex(momentum_type::phi(p));
         double ratio = _ratio[ybin][phiBin];
         
-        momentum_type::update(_modifiedParticles, p, ratio, _pileUpThreshold);
+        momentum_type::update(_modifiedParticles, p, ratio, _pileUpThreshold, _doScale);
         
       }
       
@@ -225,6 +226,20 @@ namespace NewWave{
       return;
     }
     
+    /// Whether to scale particles after applying the wavelet filtering
+    /**
+     *  After transforming from the wavelet domain back to \f$y-\phi$\f space, 
+     *  particles are removed if the ratio of their pT after/before is lower than the threshold.
+     *  The other particles have their momentum scaled according to the ratio of after/before.
+     *  With this setting, the scaling can be turned off.  This is useful in the context of 
+     *  e.g. pile up mitigation, in which there is no correlation between the hard event and
+     *  the (removed) pile up activity, therefore one may choose to either remove a particle 
+     *  completely (if it is a pile up candidate) or keep it untouched (if it is not).
+     */
+    void setScaleParticles(bool doScale){
+      _doScale = doScale;
+    }
+    
   private:
     
     WaveletCoefficients &_coefficients()const{
@@ -274,6 +289,8 @@ namespace NewWave{
     mutable bool _doInvert;
     
     double _pileUpThreshold;
+    
+    bool _doScale;
     
     mutable PixelArray _ratio;
     
