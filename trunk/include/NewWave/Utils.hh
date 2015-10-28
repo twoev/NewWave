@@ -112,10 +112,10 @@ namespace NewWave{
   
   /// convert an angle into the range \f$0 < \phi < 2\pi\f$
   inline double mod2Pi(double angle){
-    if(angle < TWOPI && angle > 0) return angle;
+    if(angle < TWOPI && angle >= 0) return angle;
     
     double dPhi = fmod(angle, TWOPI);
-    return (angle >0)? dPhi: TWOPI + dPhi;
+    return (angle >=0)? dPhi: TWOPI + dPhi;
   }
   
 }

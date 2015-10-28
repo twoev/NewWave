@@ -1,3 +1,7 @@
+2015-10-28  James Monk  <jmonk@cern.ch>
+  *  Fix problem when particle phi is exactly 0 or Pi, leading to out of array bounds
+  *  Use at() instead of [] to access vector elements
+
 2015-08-24  James Monk  <jmonk@cern.ch>
   *  Add WaveletEvent::setScaleParticles(bool) to switch off output particle scaling
 

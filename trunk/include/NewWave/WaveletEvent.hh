@@ -69,7 +69,7 @@ namespace NewWave{
           _frequencyBands.push_back(FrequencyBand(c.yLevel(), c.phiLevel()));
         }
         
-        _frequencyBands[index->second].addCoefficient(c);
+        _frequencyBands.at(index->second).addCoefficient(c);
       }
       
       return _frequencyBands;
@@ -83,7 +83,7 @@ namespace NewWave{
         throw InvalidFrequencyBand();
       }
       
-      return _frequencyBands[index->second];
+      return _frequencyBands.at(index->second);
     }
     
     const PixelDefinition &pixelDefn()const{
@@ -146,7 +146,7 @@ namespace NewWave{
       for(auto p: _originalParticles){
         size_t ybin   = _pixelDefn.yPixelIndex(momentum_type::rapidity(p));
         size_t phiBin = _pixelDefn.phiPixelIndex(momentum_type::phi(p));
-        double ratio = _ratio[ybin][phiBin];
+        double ratio = _ratio.at(ybin).at(phiBin);
         
         momentum_type::update(_modifiedParticles, p, ratio, _pileUpThreshold, _doScale);
         
@@ -266,7 +266,7 @@ namespace NewWave{
     void _addParticle(double rapidity, double phi, double pT){
       size_t ybin   = _pixelDefn.yPixelIndex(rapidity);
       size_t phiBin = _pixelDefn.phiPixelIndex(phi);
-      _originalPixels[ybin][phiBin] += pT;
+      _originalPixels.at(ybin).at(phiBin) += pT;
       return;
     }
     
