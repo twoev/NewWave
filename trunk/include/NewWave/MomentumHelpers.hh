@@ -97,6 +97,24 @@ namespace NewWave{
     
     static constexpr bool value = _value<T>(0);
   };
+
+  template <typename T>
+  struct has_Pt {
+    
+    template <typename U>
+    static constexpr bool
+    _value(typename enable_if<is_member_function_pointer<decltype(&U::Pt)>::value, U*>::type){
+      return true;
+    }
+    
+    template <typename U>
+    static constexpr bool
+    _value(...){
+      return false;
+    }
+    
+    static constexpr bool value = _value<T>(0);
+  };
   
   template <typename T>
   struct has_perp {
@@ -210,10 +228,20 @@ namespace NewWave{
   }
 
   template<typename T>
+  typename enable_if<has_Pt<T>::value &&
+  !has_pt<T>::value &&
+  !has_pT<T>::value &&
+  !has_PT<T>::value, double>::type
+  pT(const T &p){
+    return p.Pt();
+  }
+  
+  template<typename T>
   typename enable_if<has_perp<T>::value &&
   !has_PT<T>::value &&
   !has_pt<T>::value &&
-  !has_pT<T>::value , double>::type
+  !has_pT<T>::value &&
+  !has_PT<T>::value, double>::type
   pT(const T &p){
     return p.perp();
   }
@@ -223,7 +251,8 @@ namespace NewWave{
   !has_perp<T>::value &&
   !has_PT<T>::value &&
   !has_pt<T>::value &&
-  !has_pT<T>::value , double>::type
+  !has_pT<T>::value &&
+  !has_PT<T>::value, double>::type
   pT(const T &p){
     return pT(p.momentum());
   }

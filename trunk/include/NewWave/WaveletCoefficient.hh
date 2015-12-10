@@ -27,9 +27,16 @@ namespace NewWave {
      *
      *  \param yLevel The rapidity level
      *  \param phiLevel The \f$\phi\f$ level
+     *  \param key A key that, within the present event, is unique for this coefficient
+     *  \param yMin The lower edge of the rapidity region to which this coefficient contributes, normalised so that the entire rapidity range is {0,1}
+     *  \param phiMin The lower edge of the phi region to which this coefficient contributes, normalised so that the entire phi range is {0,1}
      *  \param value The value of the coefficient
      */
-    WaveletCoefficient(size_t yLevel, size_t phiLevel, size_t key, double value);
+    WaveletCoefficient(size_t yLevel, size_t phiLevel,
+                       size_t key,
+                       double yMin, double yMax,
+                       double phiMin, double phiMax,
+                       double value);
     
     /// The value of the coefficient
     /**
@@ -65,6 +72,55 @@ namespace NewWave {
      *  \return The \f$\phi\f$ level
      */
     size_t phiLevel()const;
+    
+    
+    /// The minimum of the \f$\phi\f$ range covered by the coefficient
+    /***
+     *  The contribution of each coefficient is localised to a region in
+     *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and 
+     *  \f$y\f$ levels.
+     */
+    double phiMin()const;
+
+    /// The minimum of the \f$\phi\f$ range covered by the coefficient
+    /***
+     *  The contribution of each coefficient is localised to a region in
+     *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and
+     *  \f$y\f$ levels.
+     */
+    double phiMax()const;
+    
+    /// The centre of the \f$\phi\f$ range covered by the coefficient
+    /***
+     *  The contribution of each coefficient is localised to a region in
+     *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and
+     *  \f$y\f$ levels.
+     */
+    double phiCentre()const;
+    
+    /// The minimum of the \f$y\f$ range covered by the coefficient
+    /***
+     *  The contribution of each coefficient is localised to a region in
+     *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and
+     *  \f$y\f$ levels.
+     */
+    double yMin()const;
+
+    /// The maximum of the \f$y\f$ range covered by the coefficient
+    /***
+     *  The contribution of each coefficient is localised to a region in
+     *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and
+     *  \f$y\f$ levels.
+     */
+    double yMax()const;
+    
+    /// The centre of the \f$y\f$ range covered by the coefficient
+    /***
+     *  The contribution of each coefficient is localised to a region in
+     *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and
+     *  \f$y\f$ levels.
+     */
+    double yCentre()const;
     
     /// Set the value of the coefficient
     /**
@@ -102,6 +158,18 @@ namespace NewWave {
     size_t _yLevel;
     size_t _phiLevel;
     size_t _key;
+    
+    double _yMin;
+    double _phiMin;
+    
+    double _yMax;
+    double _phiMax;
+    
+    mutable double _yCentre;
+    mutable double _phiCentre;
+    
+    mutable bool _haveYCentre;
+    mutable bool _havePhiCentre;
     
     friend class WaveletBaseEvent;
     

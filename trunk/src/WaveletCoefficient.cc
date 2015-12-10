@@ -7,10 +7,15 @@ namespace NewWave {
   WaveletCoefficient::WaveletCoefficient(size_t yLevel,
                                          size_t phiLevel,
                                          size_t key,
+                                         double yMin, double yMax,
+                                         double phiMin, double phiMax,
                                          double value):
   _value(value),
   _yLevel(yLevel), _phiLevel(phiLevel),
   _key(key),
+  _yMin(yMin),   _phiMin(phiMin),
+  _yMax(yMax), _phiMax(phiMax),
+  _haveYCentre(false), _havePhiCentre(false),
   _event(0){}
   
   double WaveletCoefficient::value()const{
@@ -27,6 +32,38 @@ namespace NewWave {
   
   size_t WaveletCoefficient::phiLevel()const{
     return _phiLevel;
+  }
+  
+  double WaveletCoefficient::yMin()const{
+    return _yMin;
+  }
+
+  double WaveletCoefficient::yMax()const{
+    return _yMax;
+  }
+  
+  double WaveletCoefficient::yCentre()const{
+    if(_haveYCentre) return _yCentre;
+    
+    _yCentre = 0.5 *(yMin() + yMax());
+    _haveYCentre = true;
+    return _yCentre;
+  }
+  
+  double WaveletCoefficient::phiMin()const{
+    return _phiMin;
+  }
+  
+  double WaveletCoefficient::phiMax()const{
+    return _phiMax;
+  }
+  
+  double WaveletCoefficient::phiCentre()const{
+    if(_havePhiCentre) return _phiCentre;
+    
+    _phiCentre = 0.5 *(phiMin() + phiMax());
+    _havePhiCentre = true;
+    return _phiCentre;
   }
   
   void WaveletCoefficient::setValue(double val){

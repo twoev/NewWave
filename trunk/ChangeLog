@@ -1,3 +1,13 @@
+2015-12-10  James Monk  <jmonk@cern.ch>
+  *  Fixed bug which meant ,phi indices on coefficients were accidentally transposed.  No impact up until now since information was not used
+  *  Added Pt implementation (as used by TLorentzVector) to MomentumHelpers
+
+2015-12-08  James Monk  <jmonk@cern.ch>
+  *  Added methods for phi[Min, Max]() and y[Min, Max]() to
+     WaveletCoefficient, giving the physical region to which each
+     coefficient is localised and contributes.
+  *  Update to GSLEngine to implement the filling of the phi and y ranges
+
 2015-10-28  James Monk  <jmonk@cern.ch>
   *  Fix problem when particle phi is exactly 0 or Pi, leading to out of array bounds
   *  Use at() instead of [] to access vector elements

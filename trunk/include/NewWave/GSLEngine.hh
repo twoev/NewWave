@@ -31,9 +31,9 @@ namespace NewWave{
     
   private:
     
-    void init(size_t nSegments);
+    void init(const PixelDefinition &pixelDefn);
 
-    void initYLevels();
+    void initYLevels(const PixelDefinition &pixelDefn);
 
     void initPhiLevels();
 
@@ -54,6 +54,10 @@ namespace NewWave{
     
     vector<size_t> _yLevels;
     vector<size_t> _phiLevels;
+    vector<double> _yMinEdges;
+    vector<double> _yMaxEdges;
+    vector<double> _phiMinEdges;
+    vector<double> _phiMaxEdges;
     
   };
 
