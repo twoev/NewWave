@@ -1,0 +1,15 @@
+#ifndef NEWWAVE_FREQUENCY_BAND_FH
+#define NEWWAVE_FREQUENCY_BAND_FH
+
+#include <vector>
+
+namespace NewWave{
+
+  using std::vector;
+
+  class FrequencyBand;
+
+  typedef vector<FrequencyBand> FrequencyBands;
+}
+
+#endif
