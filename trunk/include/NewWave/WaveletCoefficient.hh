@@ -75,15 +75,15 @@ namespace NewWave {
     
     
     /// The minimum of the \f$\phi\f$ range covered by the coefficient
-    /***
+    /**
      *  The contribution of each coefficient is localised to a region in
      *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and 
      *  \f$y\f$ levels.
      */
     double phiMin()const;
 
-    /// The minimum of the \f$\phi\f$ range covered by the coefficient
-    /***
+    /// The maximum of the \f$\phi\f$ range covered by the coefficient
+    /**
      *  The contribution of each coefficient is localised to a region in
      *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and
      *  \f$y\f$ levels.
@@ -91,7 +91,7 @@ namespace NewWave {
     double phiMax()const;
     
     /// The centre of the \f$\phi\f$ range covered by the coefficient
-    /***
+    /**
      *  The contribution of each coefficient is localised to a region in
      *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and
      *  \f$y\f$ levels.
@@ -99,7 +99,7 @@ namespace NewWave {
     double phiCentre()const;
     
     /// The minimum of the \f$y\f$ range covered by the coefficient
-    /***
+    /**
      *  The contribution of each coefficient is localised to a region in
      *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and
      *  \f$y\f$ levels.
@@ -107,7 +107,7 @@ namespace NewWave {
     double yMin()const;
 
     /// The maximum of the \f$y\f$ range covered by the coefficient
-    /***
+    /**
      *  The contribution of each coefficient is localised to a region in
      *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and
      *  \f$y\f$ levels.
@@ -115,7 +115,7 @@ namespace NewWave {
     double yMax()const;
     
     /// The centre of the \f$y\f$ range covered by the coefficient
-    /***
+    /**
      *  The contribution of each coefficient is localised to a region in
      *  \f$\phi-y\f$, the size of which depends on the \f$\phi\f$ and
      *  \f$y\f$ levels.
