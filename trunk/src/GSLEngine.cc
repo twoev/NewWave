@@ -47,10 +47,20 @@ namespace NewWave {
     
     WaveletCoefficients result;
     
+    double maxLevels = floor(log2(_nSegments / (_degree - 1)));
+    
+    double smoothingLevels = (double)_nLevels - maxLevels;
+    
     for(size_t ii=0; ii != input.size(); ++ii){
-      result.push_back(WaveletCoefficient(_yLevels.at(ii),
-                                          _phiLevels.at(ii),
+      size_t yLevel = _yLevels.at(ii);
+      size_t phiLevel = _phiLevels.at(ii);
+      
+      bool isSmoothing = (yLevel < smoothingLevels && phiLevel < smoothingLevels);
+      
+      result.push_back(WaveletCoefficient(yLevel,
+                                          phiLevel,
                                           ii,
+                                          isSmoothing,
                                           _yMinEdges.at(ii), _yMaxEdges.at(ii),
                                           _phiMinEdges.at(ii), _phiMaxEdges.at(ii),
                                           input.at(ii)));

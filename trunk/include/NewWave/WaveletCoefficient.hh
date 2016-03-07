@@ -34,6 +34,7 @@ namespace NewWave {
      */
     WaveletCoefficient(size_t yLevel, size_t phiLevel,
                        size_t key,
+                       bool smoothing,
                        double yMin, double yMax,
                        double phiMin, double phiMax,
                        double value);
@@ -73,6 +74,15 @@ namespace NewWave {
      */
     size_t phiLevel()const;
     
+    /// Is this coefficient part of the "smoothing" coefficients
+    /**
+     *  Depending on the wavelet basis used, some coefficients do not 
+     *  provide any meaningful detail on the decomposition of the signal
+     *  and can be considered equivalent to the smoothing terms.
+     *  The 0,0 coefficient is always a smoothing coefficient, but other 
+     *  coefficients may also be included
+     */
+    bool isSmoothing()const;
     
     /// The minimum of the \f$\phi\f$ range covered by the coefficient
     /**
@@ -158,6 +168,8 @@ namespace NewWave {
     size_t _yLevel;
     size_t _phiLevel;
     size_t _key;
+    
+    bool _isSmoothing;
     
     double _yMin;
     double _phiMin;

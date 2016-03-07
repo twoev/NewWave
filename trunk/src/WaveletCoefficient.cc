@@ -7,12 +7,14 @@ namespace NewWave {
   WaveletCoefficient::WaveletCoefficient(size_t yLevel,
                                          size_t phiLevel,
                                          size_t key,
+                                         bool smoothing,
                                          double yMin, double yMax,
                                          double phiMin, double phiMax,
                                          double value):
   _value(value),
   _yLevel(yLevel), _phiLevel(phiLevel),
   _key(key),
+  _isSmoothing(smoothing),
   _yMin(yMin),   _phiMin(phiMin),
   _yMax(yMax), _phiMax(phiMax),
   _haveYCentre(false), _havePhiCentre(false),
@@ -32,6 +34,10 @@ namespace NewWave {
   
   size_t WaveletCoefficient::phiLevel()const{
     return _phiLevel;
+  }
+  
+  bool WaveletCoefficient::isSmoothing()const{
+    return _isSmoothing;
   }
   
   double WaveletCoefficient::yMin()const{
