@@ -1,7 +1,10 @@
+2016-03-09  James Monk  <jmonk@cern.ch>
+  * Fix mistake in MomentumHelpers has_Pt
+
 2016-03-07  James Monk  <jmonk@cern.ch>
-*  Added WaveletCoefficient::isSmoothing, which returns true if a
-   coefficient should be considered part of the "smoothing" coefficients
-   that contain no detail information
+  *  Added WaveletCoefficient::isSmoothing, which returns true if a
+     coefficient should be considered part of the "smoothing"
+     coefficients that contain no detail information
 
 2015-12-10  James Monk  <jmonk@cern.ch>
   *  Fixed bug which meant ,phi indices on coefficients were accidentally transposed.  No impact up until now since information was not used

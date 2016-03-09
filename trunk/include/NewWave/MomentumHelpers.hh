@@ -229,19 +229,19 @@ namespace NewWave{
 
   template<typename T>
   typename enable_if<has_Pt<T>::value &&
+  !has_PT<T>::value &&
   !has_pt<T>::value &&
-  !has_pT<T>::value &&
-  !has_PT<T>::value, double>::type
+  !has_pT<T>::value, double>::type
   pT(const T &p){
     return p.Pt();
   }
   
   template<typename T>
   typename enable_if<has_perp<T>::value &&
+  !has_Pt<T>::value &&
   !has_PT<T>::value &&
   !has_pt<T>::value &&
-  !has_pT<T>::value &&
-  !has_PT<T>::value, double>::type
+  !has_pT<T>::value, double>::type
   pT(const T &p){
     return p.perp();
   }
@@ -249,7 +249,7 @@ namespace NewWave{
   template<typename T>
   typename enable_if<is_member_function_pointer<decltype(&T::momentum)>::value &&
   !has_perp<T>::value &&
-  !has_PT<T>::value &&
+  !has_Pt<T>::value &&
   !has_pt<T>::value &&
   !has_pT<T>::value &&
   !has_PT<T>::value, double>::type
