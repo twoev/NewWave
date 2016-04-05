@@ -81,7 +81,7 @@ namespace NewWave{
   }
   
   PixelArray PixelDefinition::makeEmptyPixelArray()const{
-    return vector<vector<double> >(_nBins, vector<double>(_nBins, 0.));
+    return PixelArray(_nBins, PixelRow(_nBins));
   }
   
   size_t PixelDefinition::phiPixelIndex(double phi)const{

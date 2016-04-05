@@ -62,7 +62,7 @@ namespace NewWave {
         
         size_t ybin   = _pixelDefn.yPixelIndex(rapidity);
         size_t phiBin = _pixelDefn.phiPixelIndex((*p)->momentum().phi());
-        double ratio = _ratio[ybin][phiBin];
+        double ratio = _ratio.at(ybin).at(phiBin);
         if(ratio > 0){
         
           HepMC::GenVertex *vx = new HepMC::GenVertex();

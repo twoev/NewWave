@@ -75,7 +75,7 @@ namespace NewWave{
     assert(n*n == row.size());
     PixelArray output;
 
-    vector<double> line;
+    PixelRow line;
     for(double el: row){
       line.push_back(el);
       if(line.size()==n){
@@ -105,7 +105,7 @@ namespace NewWave{
   inline PixelArray operator / (PixelArray left, const PixelArray &right){
     
     std::transform(left.begin(), left.end(), right.begin(), left.begin(),
-                   [](vector<double> num, const vector<double> &denom){return num / denom;});
+                   [](PixelRow num, const PixelRow &denom){return num / denom;});
     return left;
   }
   
