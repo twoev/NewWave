@@ -6,6 +6,7 @@
 
 namespace NewWave{
   using std::vector;
+  using std::size_t;
   
   class PixelRow{
     
