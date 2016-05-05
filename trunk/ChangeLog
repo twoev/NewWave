@@ -1,3 +1,6 @@
+2016-05-05  James Monk  <jmonk@cern.ch>
+  * Fix memory leak due to improperly freed gsl wavelet workspace
+
 2016-04-05  James Monk  <jmonk@cern.ch>
   * Replace rows of PixelArray to keep track of empty pixels and avoid
     division by zero

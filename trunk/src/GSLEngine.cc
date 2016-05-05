@@ -19,11 +19,13 @@ namespace NewWave {
   
   GSLEngine::~GSLEngine(){
     if(_wavelet != 0){
+      gsl_wavelet_free(_wavelet);
       delete _wavelet;
       _wavelet = 0;
     }
     
     if(_workspace != 0){
+      gsl_wavelet_workspace_free(_workspace);
       delete _workspace;
       _workspace = 0;
     }
