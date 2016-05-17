@@ -1,3 +1,12 @@
+2016-05-17  James Monk  <jmonk@cern.ch>
+  * The MomentumHelpers::has_Pt functions could not be instantiated for ROOT
+    TLorentzVector because the Pt() function was overloaded in that case
+    and decltype cannot find the type of an overloaded function.  This is
+    fixed by finding the return type of the no argument method and checking
+    it is a floating point type
+  * Fix issue of double delete of GSL wavelet workspace.  Only
+    gsl_wavelet_free is called now
+
 2016-05-05  James Monk  <jmonk@cern.ch>
   * Fix memory leak due to improperly freed gsl wavelet workspace
 

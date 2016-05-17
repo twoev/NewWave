@@ -7,6 +7,8 @@ namespace NewWave{
   
   using std::enable_if;
   using std::is_member_function_pointer;
+  using std::is_floating_point;
+  using std::declval;
   
   template <typename T>
   struct has_momentum {
@@ -49,7 +51,7 @@ namespace NewWave{
     
     template <typename U>
     static constexpr bool
-    _value(typename enable_if<is_member_function_pointer<decltype(&U::pT)>::value, U*>::type){
+    _value(typename enable_if<is_floating_point<decltype(declval<U>().pT())>::value, U*>::type){
       return true;
     }
     
@@ -67,7 +69,7 @@ namespace NewWave{
     
     template <typename U>
     static constexpr bool
-    _value(typename enable_if<is_member_function_pointer<decltype(&U::pt)>::value, U*>::type){
+    _value(typename enable_if<is_floating_point<decltype(declval<U>().pt())>::value, U*>::type){
       return true;
     }
     
@@ -85,7 +87,7 @@ namespace NewWave{
     
     template <typename U>
     static constexpr bool
-    _value(typename enable_if<is_member_function_pointer<decltype(&U::PT)>::value, U*>::type){
+    _value(typename enable_if<is_floating_point<decltype(declval<U>().PT())>::value, U*>::type){
       return true;
     }
     
@@ -103,7 +105,7 @@ namespace NewWave{
     
     template <typename U>
     static constexpr bool
-    _value(typename enable_if<is_member_function_pointer<decltype(&U::Pt)>::value, U*>::type){
+    _value(typename enable_if<is_floating_point<decltype(declval<U>().Pt())>::value, U*>::type){
       return true;
     }
     
@@ -121,7 +123,7 @@ namespace NewWave{
     
     template <typename U>
     static constexpr bool
-    _value(typename enable_if<is_member_function_pointer<decltype(&U::perp)>::value, U*>::type){
+    _value(typename enable_if<is_floating_point<decltype(declval<U>().perp())>::value, U*>::type){
       return true;
     }
     
@@ -139,7 +141,7 @@ namespace NewWave{
     
     template <typename U>
     static constexpr bool
-    _value(typename enable_if<is_member_function_pointer<decltype(&U::rapidity)>::value, U*>::type){
+    _value(typename enable_if<is_floating_point<decltype(declval<U>().rapidity())>::value, U*>::type){
       return true;
     }
     
@@ -157,7 +159,7 @@ namespace NewWave{
     
     template <typename U>
     static constexpr bool
-    _value(typename enable_if<is_member_function_pointer<decltype(&U::Rapidity)>::value, U*>::type){
+    _value(typename enable_if<is_floating_point<decltype(declval<U>().Rapidity())>::value, U*>::type){
       return true;
     }
     
@@ -175,7 +177,7 @@ namespace NewWave{
     
     template <typename U>
     static constexpr bool
-    _value(typename enable_if<is_member_function_pointer<decltype(&U::phi)>::value, U*>::type){
+    _value(typename enable_if<is_floating_point<decltype(declval<U>().phi())>::value, U*>::type){
       return true;
     }
     
@@ -193,7 +195,7 @@ namespace NewWave{
     
     template <typename U>
     static constexpr bool
-    _value(typename enable_if<is_member_function_pointer<decltype(&U::Phi)>::value, U*>::type){
+    _value(typename enable_if<is_floating_point<decltype(declval<U>().Phi())>::value, U*>::type){
       return true;
     }
     
