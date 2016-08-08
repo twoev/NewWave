@@ -138,7 +138,7 @@ namespace NewWave{
      */
     const T &particles()const{
       
-      if(!_doInvert || !_doParticles) return _modifiedParticles;
+      if(!_doInvert && !_doParticles) return _modifiedParticles;
       
       _ratio = pixels() / _originalPixels ;
       
