@@ -38,6 +38,7 @@ namespace NewWave{
     _originalPixels(pixelDefn.makeEmptyPixelArray()),
     _engine(engine),
     _doInvert(true),
+    _doParticles(true),
     _pileUpThreshold(0.),
     _doScale(true){
       
@@ -137,7 +138,7 @@ namespace NewWave{
      */
     const T &particles()const{
       
-      if(!_doInvert) return _modifiedParticles;
+      if(!_doInvert || !_doParticles) return _modifiedParticles;
       
       _ratio = pixels() / _originalPixels ;
       
@@ -152,7 +153,7 @@ namespace NewWave{
         
       }
       
-      _doInvert = false;
+      _doParticles = false;
       
       return _modifiedParticles;
     }
@@ -287,6 +288,7 @@ namespace NewWave{
     mutable map<int, int> _bandLookup;
     
     mutable bool _doInvert;
+    mutable bool _doParticles;
     
     double _pileUpThreshold;
     

@@ -1,3 +1,7 @@
+2016-08-08  James Monk  <jmonk@cern.ch>
+  * Fixed wrong caching of particles when pixels() is called without updating
+    the particles
+
 2016-05-17  James Monk  <jmonk@cern.ch>
   * The MomentumHelpers::has_Pt functions could not be instantiated for ROOT
     TLorentzVector because the Pt() function was overloaded in that case
