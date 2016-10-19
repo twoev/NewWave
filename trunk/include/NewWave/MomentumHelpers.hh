@@ -27,24 +27,14 @@ namespace NewWave{
     
     static constexpr bool value = _value<T>(0);
   };
-
-  template <typename T>
-  struct has_setMomentum {
-    
-    template <typename U>
-    static constexpr bool
-    _value(typename enable_if<is_member_function_pointer<decltype(&U::setMomentum)>::value, U*>::type){
-      return true;
-    }
-    
-    template <typename U>
-    static constexpr bool
-    _value(...){
-      return false;
-    }
-    
-    static constexpr bool value = _value<T>(0);
-  };
+  
+  template<typename> struct Void { typedef void type; };
+  
+  template <typename T, typename U = void>
+  struct has_setMomentum : std::false_type {};
+  
+  template<typename T>
+  struct has_setMomentum<T, typename Void<decltype(declval<T&>().setMomentum(declval<decltype(declval<T&>().momentum())>())) >::type > : std::true_type{};
   
   template <typename T>
   struct has_pT {
@@ -249,7 +239,7 @@ namespace NewWave{
   }
   
   template<typename T>
-  typename enable_if<is_member_function_pointer<decltype(&T::momentum)>::value &&
+  typename enable_if<has_momentum<T>::value &&//  is_member_function_pointer<decltype(&T::momentum)>::value &&
   !has_perp<T>::value &&
   !has_Pt<T>::value &&
   !has_pt<T>::value &&
@@ -304,7 +294,7 @@ namespace NewWave{
   
   template<typename T>
   typename enable_if<has_momentum<T>::value &&
-  has_setMomentum<T>::value>::type
+  has_setMomentum<T>()>::type
   scaleMomentum(double scale, T &p){
     p.setMomentum(p.momentum() * scale);
     return;

@@ -1,3 +1,7 @@
+2016-10-19  James Monk  <jmonk@cern.ch>
+  * Improved the MomentumHelpers again so it can work when there is an
+    overloaded setMomentum method
+
 2016-08-08  James Monk  <jmonk@cern.ch>
   * Fixed wrong caching of particles when pixels() is called without updating
     the particles
