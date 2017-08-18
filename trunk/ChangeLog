@@ -1,3 +1,6 @@
+2017-08-18  James Monk  <jmomnk@cern.ch>
+  * Improved WaveletBaseEvent interface to expose more methods
+
 2016-10-19  James Monk  <jmonk@cern.ch>
   * Improved the MomentumHelpers again so it can work when there is an
     overloaded setMomentum method

@@ -9,7 +9,6 @@
 #include "NewWave/Utils.hh"
 #include "NewWave/MomentumHelpers.hh"
 
-#include <functional>
 #include <map>
 #include <cmath>
 
