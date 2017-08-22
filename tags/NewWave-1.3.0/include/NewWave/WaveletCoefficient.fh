@@ -1,0 +1,16 @@
+#ifndef NEWWAVE_WAVELET_COEFFICIENT_FH
+#define NEWWAVE_WAVELET_COEFFICIENT_FH
+
+#include <vector>
+
+namespace NewWave{
+
+  using std::vector;
+
+  class WaveletCoefficient;
+
+  typedef vector<WaveletCoefficient> WaveletCoefficients;
+
+}
+
+#endif
