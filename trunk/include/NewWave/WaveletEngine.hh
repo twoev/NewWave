@@ -15,6 +15,8 @@ namespace NewWave {
   class WaveletEngine{
     
   public:
+
+    virtual ~WaveletEngine(){}
     
     /// Perform the wavelet transformation on a 2-D array of pixels
     /**

@@ -17,6 +17,8 @@ namespace NewWave{
   class WaveletBaseEvent{
     
   public:
+
+    virtual ~WaveletBaseEvent(){}
     
     virtual const WaveletCoefficients &coefficients() const = 0;
     
